@@ -3,7 +3,12 @@ package com.algaworks.algafoodapi.domain.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Data
 @Entity
@@ -13,13 +18,12 @@ public class Cidade {
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
 
     @Column(nullable = false)
-    String nome;
+    private String nome;
 
     @ManyToOne
-    //@Column(nullable = false) //se der erro foi aqui
-    Estado estado;
+    private Estado estado;
 }

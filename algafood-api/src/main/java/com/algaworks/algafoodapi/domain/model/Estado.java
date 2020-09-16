@@ -13,8 +13,8 @@ public class Estado {
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    Long id;
+    private Long id;
 
     @Column(nullable = false)
-    String nome;
+    private String nome;
 }
