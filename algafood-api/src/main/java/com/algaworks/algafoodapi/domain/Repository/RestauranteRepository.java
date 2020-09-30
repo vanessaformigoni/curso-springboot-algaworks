@@ -16,7 +16,7 @@ public interface RestauranteRepository
     List<Restaurante> queryByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 
     //@Query("from Restaurante where nome like %:nome% and cozinha.id=:id" ) /Exemplo 01: criando a query na mao (inativo)
-    //Exemplo 02 com o orm.xml (atual em uso).
+    //Exemplo 02: com o orm.xml (atual em uso).
     List<Restaurante> consultarPorNome(String nome, @Param("id") Long cozinhaId);
 
     //Exemplo 03: Variacoes de prefixos para query methodos (inativo)
