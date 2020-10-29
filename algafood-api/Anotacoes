@@ -1,0 +1,173 @@
+Anotações Curso de Especialista Spring REST - Algaworks
+
+----> Modulo 02
+
+Spring é uma tecnologia de back-end, não apenas um framework, mas sim um conjuto de projetos que resolvem vários problemas do dia dia de um programador backend. Ajuda a criar aplicações java com simplicidade e flexibilidade (Ecossistema Spring). O Desenvolvedor foca nas regras de negocios. O Spring MVC é o que a gente usa pra desenvolvimento web e pra RestApi com spring. O Spring Boot ele configura pra gente os outros projetos. É o spring boot (e não o spring) que incorpora o toncat (tanto que no spring webflux é o netty).
+
+- Spring framework é onde fica o core do Spring junto com outras funcionalidades
+- Spring core é o que trata de injeção de dependência, eventos, validações, entre outros
+- Spring mvc é a "parte web" do Spring, com ele você irá desenvolver aplicações Web/Rest
+- Spring boot é uma ferramenta que ajuda a agrupar e configurar projetos que usam o ecossistema Spring
+
+Ex: O JPA é uma especificação que ta dentro do JEE, o hibernate é a implementação.
+No spring MVC a gente usa servelet, ou seja, JEE, o JPA também é do JEE. Então mesmo usando spring, e a gente usa JEE.
+
+O Spring Boot pode rodar tanto web como não, ele é um framework mais de configuração, o que a gente usar pra desenvolvimento web é o spring MVC. O SBoot é uma camada de abstração por cima do spring. Solução pra simplificar o desenvolvimento com projetos spring.
+
+Essa estrutura de pastas, src/main/java é padronizada pelo maven. O maven baixa as dependencias de um repositorio remoto e, coloca num repositorio local, no .m2/repository para poder ser usado.
+
+Controller quer dizer que essa classe é responsavel por receber requisições web. O Responsebory diz que o retorno seja devolvida como resposta dessa requisição.
+
+Injeção de dependencias é uma forma de inversão de controle, aonde a gente injeta uma dependecia numa determinada classe. Injeção de dependencia diminui o acoplamento. (Voce tira as dependencias das classe e programa orientado a interface). Ex. aula 2.9.
+
+Beam é o nome dado a objetos gerenciados pelo container do spring. O container de inversão de controle do spring é representada pela interface chamada spring context.
+
+Anotando com @Component eu digo ao spring pra ele gerenciar aquela classe pra mim, ele ˜instancia˜ quando sobe o contexto  do spring. Quando a gente usa injeção de dependencias, não precisa dar new pq o spring já faz isso pra gente e injetou a onde nos precisavamos.
+
+Uma classe com @Configuration é uma classe que define(configura) outros Beans (tem que ter um bean dentro da configuração). A anotação @Bean (nesse caso) signigica que o metodo inicializa, instancia e configura um objeto que será gerenciado pelo container spring.
+
+Quando tivermos mais de um construtor, usamos o autowired pro spring saber qual instanciar. O ideal é usar o @autowired no construtor, pois ai fica claro pra quando a gente for instanciar uma nova classe, quais são as dependencias obrigatorias daquela classe. O @Qualifier da "apelidos" as classes, e voce escolhe qual usar.
+
+Os beans tem um ciclo de vida, inicializa;áo, usando o bean e destruicao do bean. Podemos criar metodos de callback, que sâo chamados quando passa por alguma fase do ciclo de vida. @PostConstruct é pra mostar quando obean é criado e @PreDestroy momentos antes de destruir. O postConstruct é chamado após o construtor, apos ter feito todas as injeções.
+
+O spring implementa o padrão observer. É o event handler. Ele serve pra deixar o acoplamento mais baixo entre as nossas classes. Tem que ter uma classe que publica o evento, uma que escuta e outra que define o evendo em si. Evento customizado. 
+
+A gente pode também criar nossas proprias propriedades customizadas. 
+
+----> Modulo 03
+
+A persistencia de dados funciona assim: Codigo Java ->  (ORM - JPA -- Hibernate) -> Driver JDBC -> MySQL . ORM, Mapeamento Objeto Relacional. É uma tecnica para mapeamento de classes orientada a objetos pra tabelas do banco de dados. @Entity, @Id e etc são anotações JPA. Eu persisto objetos java, e o ORM vai traduzir pra SQL e fazer o que tem que ser feito no BD. JPA é a especificação. JPA não é produto. Ele descreve como algo deve funcionar, mas não implementa. Hibernate é a implementação. Ex: EclipseLink.   
+
+No curso nos criaremos as entidades e depois faremos o mapeamento. Toda entidade tem um Id.
+
+@Entity = a classe representa uma entidade, e a entidade representa uma tabela no modelo relacional. (anotação do JPA)
+@Id = esse atributo será o identificador da nossa entidade. Se eu não especificar, o nome do atributo virá um campo na tabela. Em produção, nâo se deve gerar as tabelas automaticamente. 
+
+spring.jpa.generate-ddl=true --> digo ao spring pta gerar as tabelas automaticamente. spring.jpa.hibernate.ddl-auto=create --> dropa e recria as tabelas sempre que aplicação reiniciar.
+
+Se eu quiser fazer import de dados, basta criar um import.sql (tem que ser esse nome) e adicionar os valores manualmente - por script.
+JPQL -> Linguagem de consulta do JPA. A aplicação web, inicia e fica esperando requisições, enquanto uma aplicação não web, inicia roda, e finaliza.
+
+Na atualização, se voce passar um id que já existe no banco, ele salvara por cima.
+Quando eu quiser deletar algo do banco, eu sempre preciso antes buscar a instancia do banco (deixar no estado de manager), para só então poder remover.
+
+Padrao Aggregate DDD, que é um abordagem de software que nós faz desenvolver software de qualidade, com foco no dominio (negocio).
+
+O DDD diz que o agregate root é o item maior , ex pedidos, e os agregados (itensPedidos). Nao deve haver relação de agragado com agregado, somente agregado com root ou root com root. O repository é por grupo, ou agregate root.
+
+Lombok, a IDE tem que ter o plugin. @Getter,@Setter, @EqualsAndHashCode, @ToString = @Data. Para o equals e hashcode só usar o id, que é o nosso interesse na maioria das vezes, faco assim:
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+public class Cozinha {
+
+	@EqualsAndHashCode.Include
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+
+Na criação das tabelas pelo hibernate, o engine=MyISAM e não suporta chave estrangeira, pra resolver isso, precisamos usar o innoDB.
+@JoinColumn serve pra alterar o nome da chave estrangeira. 
+
+ @ManyToOne 
+ @JoinColumn(name = "cozinha_codigo")
+ private Cozinha cozinha; 
+
+  //Muitos restaurantes possuem uma cozinha  (pode ter mais de um restaurante pra cozinha japonesa).
+   // @JoinColumn(name = "cozinha_id", nullable = false)
+
+generated DDL é mais pra desenvolvimento. Depois aprenderemos o jeito mais utilizado.
+
+----> Modulo 04
+Rest = Representional state transfer = Modelo Arquitetural. Api rest é uma API que segue o padrao rest. Rest tem a separação entre cliente e servidor (quem consome/prover). Podem evoluir independentemente. Rest teve o intuito de formalizar constraints  que são as melhores práticas. -> Cliente/Servidor -> Stateless (cada requisição é um novo client/requisicao) -> Cache -> Interface Uniforme -> Sistema em Camadas -> Codigo sob demanda
+
+Tem header da request e da response. 
+
+Rest é a especificação , Restful Api, é segue todas as constraints do rest, religiosamente, nas pratica isso não ocorre sempre.   
+O protocolo HTTP é um protocolo resquisição resposta. O rest é independente de protocolos.
+POST - Submete dados pro servidor (geralmente para salvar no banco).
+GET - Solicita que seja devolvido na resposta dados na que precisamos.
+
+Um recurso rest é qualquer coisa exposta na web, documento, video, imagem, etc.. Resource. Podemos ter singleton resource ou collection resouce. Semelhante a instancia da O.O. Rest usa URI pra identificar os recursos = Uniform Resource Identity. URL(localizador) é um tipo. de URI. A URL indentifica o recurso e como chegar nele. .com.br. Pra urls é melhor usar substantivos: Ex: produtos em ver de listarProdutos. Usar sempre no plural. Ex: produtos em vez de produto.
+
+Controlador -> classe responsavel por receber as requisições web, tratar e devolver uma resposta. Conzinha controller é uma classe controladora de cozinha.
+@RequestBody diz que a resposta dos metodos do controlador devem ir pra respotas da requisição http. 
+A @Restcontroller diz que é um @Controller e @Responsebody. Não é um controlador qualquer, é um controlador rest.
+
+Um recurso, é qualquer coisa exposta na internet.
+
+O springboot pot padrao especifica Json.
+
+@PathVariable serve para passar parametros pelo PATH e, consequentemente, fazer as amarrações. 
+    @GetMapping("/{cozinhaId}")
+    public Cozinha buscar(@PathVariable("cozinhaId") Long id)
+
+Dessa forma, o binding é feito de forma automatica
+	 @GetMapping("/{cozinhaId}")
+     public Cozinha buscar(@PathVariable Long cozinhaId)
+
+@JsonProperties muda o nome representado na api, se não colocar, permanece o nome original. @JsonIgnore não mostra na representação. @JsonRootName muda o nome no XML. (São do jackson).
+
+Verbos: GET (obtem um recurso - não modifica um recurso), POST (cria um novo recurso - tem body, payload), PUT (atualiza recurso completo, se você não passar o 2 campo, ele virá como nullo ou vazio) -  Patch (Atualiza parcialmente um recurso, só um campo, não todos, os outros ficam inalterados). DELETE (remover recurso - não passa e nem recebe recurso). HEAD (similar ao get, mas não retorna corpo na resposta, é usado pra buscar apenas o cabeçalho.). OPTIONS (solicita uma lista de metodos suportado por um recurso).
+@ResponseStatus(HttpStatus.CREATED) (serve pra mudar o status da resposta no metodo). 
+
+O jackson é a lib responsavel por converter o objeto em json/xlm e vice versa.
+ResponseEntity respresenta uma resposta http onde pode ter uma instancia de cozinha dentro de responseEntity. ResponseEntity<T>
+
+Voce pode lançar escessão no repository, mas tratar o ideal seria no service.
+
+@PATCH -> Faz a atualização parcial, o que eu quero mudar eu escrevo no body. Mas precisa ter cuidado em como receber pois. Melhor forma usar o Map<String, Object> pois, se eu quiser mudar um objeto pra null, ele irá mostrar.
+
+Voce pode reutilizar um metodo do controler dentro do controller por exemplo sem precisar fazer request de postman por ex. É só chamar normnalmente, passando os atributos na ordem certa.
+
+REFLECTIONS (API) -> É a capacidade de inspecionar objetos java em tempo de execução e até alterar, tudo em tempo de execução, de forma dinamica.. 
+
+----> Modulo 05
+
+O JPQL é a liguagem de consultas do JPA. Estamos usando o JPA mas não o Spring Data JPA. O @Repository possui tradutor de excepitos (não é só semantica igual ao @service). 
+
+Os query Params do spring é pra voce passar os dados na query usando Query Strings. Para isso usamos o @RequestParam.
+
+O Spring Data JPA é um subprojeto do Spring Data. O Spring Data JPA ele cria a implementação em tempo de execução.
+
+FindAll = buscar.
+
+O JPA permite que voce crie uma expressáo somente especificando o cabeçalho. Baste ter um atibuto da entidade. Ex:
+
+Keywords
+findByNome (retorna todas as entidades com o nome)
+findByNameContaining(String nome)
+Para mais nomes
+https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation 
+
+@RequestParam é o padrao, se voce nao colocar nada no metodo do controller, ele vem como query parameter. Mas tem que ser o nome igual.
+
+Quando eu quiser fazer uma consulta no banco, e o spring data jpa não puder fazer por mim, terei que usar JPQL. Exemplo de uso:
+
+@Query("from Restaurante where nome like %:nome% and cozinha.id=:id" )
+    List<Restaurante> consultarPorNome(String nome, @Param("id") Long cozinhaId);
+
+No nome é quando é igual, e o @Param pra fazer o biding quando for diferente o nome.
+
+Podemos externalizar nossas querys pra deixar o código mais limpo, pra isso é necessario criar uma pasta chamada META-INF (em recources), e o arquivo orm.xml. Precisamos definir que o arquivo é um arquivo que faz mapeamento de entidades (existe um arquivo de configuração do proprio JPA pronto que diz isso -> https://gist.github.com/thiagofa/35d5a651a39cb0b26f050dc3b1ce8f9b). E tem que seguir o padrão de nomeclatura, como abaixo:
+
+<named-query name="Restaurante.consultarPorNome">
+            <query>
+                from Restaurante
+                where nome like concat('%', :nome, '%')
+                and cozinha.id = :id
+            </query>
+        </named-query>   
+
+Para fazer consultas personalizadas, voce cria uma classe chamada objetoRepositoryImpl , näo precisa extender a obejatoRepository, só declarar o método nomeRepositoryImpl que o spring tem a inteligencia de fazer essa "amarração". (Implementação customizada). O impl faz a magia acontecer
+
+Consultar DINAMICAS
+
+CriateriaApi = API do JPA poderosa pra criar querys de forma programatica para querys complexas(porem burocratica) e que seriam dificeis com o JPQL. A gente monta a consulta usando codigo java e depois, uma query sql é montada e executada normalmente.
+
+terminei a 5.13
+
+
+
