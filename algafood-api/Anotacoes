@@ -167,7 +167,7 @@ Consultar DINAMICAS
 
 CriateriaApi = API do JPA poderosa pra criar querys de forma programatica para querys complexas(porem burocratica) e que seriam dificeis com o JPQL. A gente monta a consulta usando codigo java e depois, uma query sql é montada e executada normalmente.
 
-terminei a 5.13
+finalizei a 5.15
 
 
 

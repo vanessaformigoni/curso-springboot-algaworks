@@ -1,6 +1,7 @@
 package com.algaworks.algafoodapi.infrastructure.repository;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import com.algaworks.algafoodapi.domain.Repository.RestauranteRepositoryQueries;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
@@ -63,11 +66,28 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 //        return query.getResultList()
 // Fim Exemplo 02
 
-        CriteriaBuilder builder = manager.getCriteriaBuilder(); // Exemplo 03: Consulta usando CriteriaApi
-        CriteriaQuery<Restaurante> criteriaQuery = builder.createQuery(Restaurante.class);
-        criteriaQuery.from(Restaurante.class); //clausula from
+        CriteriaBuilder builder = manager.getCriteriaBuilder(); // Exemplo 03: Consulta dinamica usando CriteriaApi //Não funciona o filtro pra nome e nem a dinamica
 
-        TypedQuery<Restaurante> query = manager.createQuery(criteriaQuery);
+        CriteriaQuery<Restaurante> criteria = builder.createQuery(Restaurante.class);
+        Root<Restaurante> root = criteria.from(Restaurante.class); //clausula from
+
+        var predicates = new ArrayList<Predicate>();
+
+        if(StringUtils.hasText(nome)) {
+            predicates.add(builder.like(root.get("nome"), "%" + nome + "%"));
+        }
+
+        if(taxaFreteInicial!=null) {
+            predicates.add(builder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial));
+        }
+
+        if(taxaFreteFinal!=null) {
+            predicates.add(builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal));
+        }
+
+        criteria.where(predicates.toArray(new Predicate[0])); //03 and //converte List em array
+
+        TypedQuery<Restaurante> query = manager.createQuery(criteria);
         return query.getResultList();
     }
 }
