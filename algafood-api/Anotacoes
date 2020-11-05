@@ -167,7 +167,13 @@ Consultar DINAMICAS
 
 CriateriaApi = API do JPA poderosa pra criar querys de forma programatica para querys complexas(porem burocratica) e que seriam dificeis com o JPQL. A gente monta a consulta usando codigo java e depois, uma query sql é montada e executada normalmente.
 
-finalizei a 5.15
+Padrão de projeto Specifications (faz parte do DDD) com SDJ:
+
+O Spring Data jpa implementou isso na sua API. Ele encapsula um filtro e pode ser combinado com outras specifications.
+
+@AllArgsConstructor = Cria um construtor recebendo a variável e fazendo a devida atribuição.
+O Repository terá que herdar essa especificação JpaSpecificationExecutor<T>
+Cada especificação cria um predicato.
 
 
 
