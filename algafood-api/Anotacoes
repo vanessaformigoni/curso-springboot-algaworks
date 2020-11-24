@@ -176,6 +176,15 @@ O Repository terá que herdar essa especificação JpaSpecificationExecutor<T>
 Cada especificação cria um predicato.
 Rever Aula 5.20
 
+-----> Modulo 06
+
+Mapeamento bidirecional serve pros dois terem acesso aos dados um do outro. Um mapeamento é sempre o contrário do outro.
+Muito importante o conceito de dono da associação, seria quem manda na associação, quem tem referencia a sobre o outro na tabela é o dono.
+O Mapeamento tem quer feito de acordo em como ta no banco. Pra exibir ou não serializando, ai não faz diferenca. 
+o @JsonIgnore serve para nós não termos o problema na hora de serializar ao que tenha mapeamento bidirecional.
+Nem sempre é necessário usar o mapamento bidirecional, inclusive é uma pratica ruim fazer se não for necessário.
+A diceração serve pra dizer quem tem acesso ao o que, unidirecional ou bidirecional (o mappedy by ajuda na bidireção).
+No modelo ManyToMany devemos criar uma tabela de associação entre as duas entidades. Existe a tabela, mas não existe a classe. Como a gente ta usando o gerador de esquema, ele vai gerar essa tabela.
 
 
 
