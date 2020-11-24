@@ -27,7 +27,4 @@ public class Restaurante  {
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
-    @Column(name = "cozinha_nome")
-    private String cozinhaNome
-
 }
