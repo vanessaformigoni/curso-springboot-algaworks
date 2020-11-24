@@ -1,13 +1,12 @@
 package com.algaworks.algafoodapi.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 //@Table//(name = "tab_cozinhas")
@@ -22,5 +21,9 @@ public class Cozinha {
 
     @Column(nullable = false)
     private String nome;
+
+    @JsonIgnore //ignore essa propriedade na hora de fazer a serializacao.
+    @OneToMany(mappedBy = "cozinha") //nome da varivel na outra classe.
+    private List<Restaurante> restaurantes = new ArrayList<>();
 
 }
