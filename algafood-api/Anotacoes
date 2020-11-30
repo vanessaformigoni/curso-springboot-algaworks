@@ -186,5 +186,6 @@ Nem sempre é necessário usar o mapamento bidirecional, inclusive é uma pratic
 A diceração serve pra dizer quem tem acesso ao o que, unidirecional ou bidirecional (o mappedy by ajuda na bidireção).
 No modelo ManyToMany devemos criar uma tabela de associação entre as duas entidades. Existe a tabela, mas não existe a classe. Como a gente ta usando o gerador de esquema, ele vai gerar essa tabela.
 
+Neste exemplo, nosso modelo de dominio da aplicação (entidades - modelo de dominio) também esta sendo usado como Modelo de representação do recurso (modelo da api dto).
 
 
