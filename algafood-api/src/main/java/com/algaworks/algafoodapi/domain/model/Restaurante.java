@@ -30,6 +30,7 @@ public class Restaurante  {
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
+    @JsonIgnore //ignora na hora de representar a serializacaogit a
     @Embedded
     private Endereco endereco;
 

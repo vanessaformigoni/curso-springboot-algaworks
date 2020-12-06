@@ -192,6 +192,6 @@ Objetos embutidos/encorporados.
 
 @Embeddable - classe a ser incorporada, ela tem a capacidade de ser incorporada a uma classe. É uma clase parte de uma entidade e não uma entidade em si. Todas as propriedades dessa classe é refletida na tabela da entidade na qual incorpora. 
 
-@Embedded - pra dizer que é pra incorporar aquela classe. 
+@Embedded - pra dizer que é pra incorporar aquela classe. Cidade esta relacionada com estado, uma cidade tem um estado, então o estado tem que estar inserido primeiro. 
 
 

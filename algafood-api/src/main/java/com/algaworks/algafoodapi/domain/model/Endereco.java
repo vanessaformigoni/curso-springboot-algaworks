@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 
 @Data
 @Embeddable
-public class Endereco {
+public class  Endereco {
 
     @Column(name = "endereco_cep")
     private String cep;
