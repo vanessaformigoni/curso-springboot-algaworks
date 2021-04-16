@@ -184,14 +184,28 @@ O Mapeamento tem quer feito de acordo em como ta no banco. Pra exibir ou não se
 o @JsonIgnore serve para nós não termos o problema na hora de serializar ao que tenha mapeamento bidirecional.
 Nem sempre é necessário usar o mapamento bidirecional, inclusive é uma pratica ruim fazer se não for necessário.
 A diceração serve pra dizer quem tem acesso ao o que, unidirecional ou bidirecional (o mappedy by ajuda na bidireção).
+
 No modelo ManyToMany devemos criar uma tabela de associação entre as duas entidades. Existe a tabela, mas não existe a classe. Como a gente ta usando o gerador de esquema, ele vai gerar essa tabela.
 
 Neste exemplo, nosso modelo de dominio da aplicação (entidades - modelo de dominio) também esta sendo usado como Modelo de representação do recurso (modelo da api dto).
+
 Componentizar nesse caso significa pegar uma classe e subdividir de duas classes ou mais. Diminui a dependencia entre elas e uma pode ser reutilizada por outras classes.
 Objetos embutidos/encorporados. 
 
 @Embeddable - classe a ser incorporada, ela tem a capacidade de ser incorporada a uma classe. É uma clase parte de uma entidade e não uma entidade em si. Todas as propriedades dessa classe é refletida na tabela da entidade na qual incorpora. 
 
 @Embedded - pra dizer que é pra incorporar aquela classe. Cidade esta relacionada com estado, uma cidade tem um estado, então o estado tem que estar inserido primeiro. 
+
+Como restaurante tem uma chave estrangeira com cidade, precisamos adicionar a cidade, e consequentemente o estado ANTES de adicionar o restaurante.
+
+@JsonIgnore - ignora na hora de representar a serializacao
+
+LocalDateTime - Data hora - sem fuso horário (timestamp)
+
+@CreationTimestamp - Quando criar, seta esse campo. @UpdateTimestamp - Quando atualizar, seta esse campo.
+
+UTC - gmt =0 , estamos no gmt -3 .
+
+Terminei a 6.6.
 
 

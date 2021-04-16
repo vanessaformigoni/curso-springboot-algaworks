@@ -40,7 +40,7 @@ public class Restaurante  {
     @JsonIgnore
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime dataCadastro; //Data hora sem timestamp (fuso horario)
+    private LocalDateTime dataCadastro;
 
     @JsonIgnore
     @UpdateTimestamp
@@ -54,4 +54,7 @@ public class Restaurante  {
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurante")
+    private List<Produto> produtos = new ArrayList<>();
 }
