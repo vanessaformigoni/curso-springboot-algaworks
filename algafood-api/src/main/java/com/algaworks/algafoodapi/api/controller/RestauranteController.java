@@ -81,13 +81,14 @@ public class RestauranteController {
     public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId,
                                               @RequestBody Map<String, Object> campos) {
 
-        Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
-        if (restauranteAtual.isEmpty()) {
-            ResponseEntity.notFound().build();
+        Restaurante restauranteAtual = restauranteRepository
+                .findById(restauranteId).orElse(null);
+        if (restauranteAtual==null) {
+            return ResponseEntity.notFound().build();
         }
-        merge(campos, restauranteAtual.get()); //funcao: mesclar os dados do campos para o restaurante atual
+        merge(campos, restauranteAtual); //funcao: mesclar os dados do campos para o restaurante atual
 
-        return atualizar(restauranteId, restauranteAtual.get()); //muito bom isso
+        return atualizar(restauranteId, restauranteAtual); //muito bom isso
     }
 
     private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) { //Aula 4.33 (final)/34
