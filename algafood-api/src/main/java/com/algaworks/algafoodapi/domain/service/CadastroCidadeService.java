@@ -27,7 +27,7 @@ public class CadastroCidadeService { //não fiz
                 .orElseThrow(()-> new EntidadeNaoEncontradaException(
                         String.format("Não existe cadastro de estado com código %d", estadoId)));
 
-        cidade.setEstado(estado);
+        cidade.setEstado(estado); //Não sei se precisa disso.
 
         return cidadeRepository.save(cidade);
     }
