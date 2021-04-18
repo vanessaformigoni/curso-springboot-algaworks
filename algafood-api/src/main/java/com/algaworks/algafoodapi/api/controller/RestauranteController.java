@@ -69,15 +69,15 @@ public class RestauranteController {
                 return ResponseEntity.ok(restauranteSalvo);
             }
 
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build(); //Aqui é caso não ache o restauranteId
 
-        } catch (EntidadeNaoEncontradaException e) {
+        } catch (EntidadeNaoEncontradaException e) { //Aqui é caso não ache a cozinhaId
             return ResponseEntity.badRequest()
                     .body(e.getMessage());
         }
     }
 
-    @PatchMapping("/{restauranteId}")
+    @PatchMapping("/{restauranteId}") //Ele vai ensinar futuramente a fazer de forma mais elegante.
     public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId,
                                               @RequestBody Map<String, Object> campos) {
 
@@ -90,13 +90,13 @@ public class RestauranteController {
         return atualizar(restauranteId, restauranteAtual.get()); //muito bom isso
     }
 
-    private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+    private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) { //Aula 4.33 (final)/34
+        ObjectMapper objectMapper = new ObjectMapper(); //É do jackson. Faz a conversão (serializacao) de JSON em Ojetos Java e vice versa.
+        Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class); //Converta esses dadosOrigem pra um tipo Restaurante.
 
-        dadosOrigem.forEach((nomePropriedade, valorpropriedade) -> {
+        dadosOrigem.forEach((nomePropriedade, valorpropriedade) -> { //Agora eu só percorro o que foi passado pelo consumidor da Api.
             Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
-            field.setAccessible(true);
+            field.setAccessible(true); //Mesmo a variável sendo privada, quero acessar ela. Quebra de acesso.
 
             Object novoValor = ReflectionUtils.getField(field,restauranteOrigem);
             ReflectionUtils.setField(field,restauranteDestino,novoValor);

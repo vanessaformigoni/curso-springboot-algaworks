@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
 @RequestMapping(value="/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CozinhaController {
@@ -35,9 +34,9 @@ public class CozinhaController {
     public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
         Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
 
-        // return ResponseEntity.status(HttpStatus.OK).body(cozinha);
         if(cozinha.isPresent())
             return ResponseEntity.ok(cozinha.get());
+           // return ResponseEntity.status(HttpStatus.OK).body(cozinha); //opcao 02
         else
             return ResponseEntity.notFound().build();
     }

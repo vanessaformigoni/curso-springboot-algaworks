@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/cidades") //nao fiz
+@RequestMapping(value = "/cidades")
 public class CidadeController {
 
     @Autowired

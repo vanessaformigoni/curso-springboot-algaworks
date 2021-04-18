@@ -26,7 +26,7 @@ public class TesteController {
     @Autowired
     private RestauranteRepository restauranteRepository;
 
-    @GetMapping("/cozinhas/por-nome")
+    @GetMapping("/cozinhas/por-nome") //Quando não especifica se é @PathVariable, passa pelo header.
     public List<Cozinha> cozinhasPorNome(String nome) {
         return cozinhaRepository.findByNomeContaining(nome);
     }
@@ -48,7 +48,7 @@ public class TesteController {
         return restauranteRepository.consultarPorNome(nome, cozinhaId);
     }
 
-    @GetMapping("/restaurantes/por-nome-e-frete")
+    @GetMapping("/restaurantes/por-nome-e-frete") // nome=a&taxaFreteInicial=9.00&taxaFreteFinal=42.00
     public List<Restaurante> restaurantesPorNomeFrete(String nome,
                                                       BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
         return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
