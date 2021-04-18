@@ -48,7 +48,7 @@ public class CozinhaController {
     }
 
     @PutMapping("/{cozinhaId}")
-    public ResponseEntity<Cozinha> atualizar (@PathVariable Long cozinhaId,
+    public ResponseEntity<Cozinha> atualizar (@PathVariable Long cozinhaId, //Não ta atualizando, descobrir o erro
                                               @RequestBody Cozinha cozinha) {
         Optional<Cozinha> cozinhaAtual = cozinhaRepository.findById(cozinhaId);
 
