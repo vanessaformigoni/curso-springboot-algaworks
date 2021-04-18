@@ -61,7 +61,7 @@ public class CidadeController {
         try {
             Optional<Cidade> cidadeAtual = cidadeRepository.findById(cidadeId);
 
-            if (cidadeAtual != null) {
+            if (!cidadeAtual.isEmpty()) {
                 BeanUtils.copyProperties(cidade, cidadeAtual.get(), "id");
 
                 Cidade cidadeSalva = cadastroCidade.salvar(cidadeAtual.get());
