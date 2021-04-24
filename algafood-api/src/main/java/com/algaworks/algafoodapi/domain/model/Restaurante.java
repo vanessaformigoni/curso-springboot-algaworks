@@ -26,14 +26,13 @@ public class Restaurante  {
     @Column(nullable = false)
     private String nome;
 
-    //@Column(name="taxa_frete")
     private BigDecimal taxaFrete;
 
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
-    @JsonIgnore //ignora na hora de representar a serializacao
+    @JsonIgnore
     @Embedded
     private Endereco endereco;
 
@@ -49,8 +48,8 @@ public class Restaurante  {
 
     @JsonIgnore
     @ManyToMany
-    @JoinTable(name = "restaurante_forma_pagamento", //para customizar o nome da tabela
-            joinColumns = @JoinColumn (name = "restaurante_id"),
+    @JoinTable(name = "restaurante_forma_pagamento", //para customizar o nome da tabela intermediaria
+            joinColumns = @JoinColumn (name = "restaurante_id"), //(Ja que estamos mapeando restaurante) Define o nome da coluna na tabela intermediaria que associa em restaurante
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
