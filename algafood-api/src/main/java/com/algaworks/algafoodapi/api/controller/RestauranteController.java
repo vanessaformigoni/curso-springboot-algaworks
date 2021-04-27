@@ -105,4 +105,24 @@ public class RestauranteController {
         });
     }
 
+    /*  @GetMapping //Metodo para entender o Lazy Loading
+    public List<Restaurante> listar() {
+        List<Restaurante> restaurantes = restauranteRepository.findAll();
+
+        System.out.println(restaurantes.get(0).getNome());
+        restaurantes.get(0).getFormasPagamento().forEach(System.out::println);
+
+        return restaurantes;
+    }*/
+
+   /* @GetMapping //Metodo para entender o Lazy Loading
+    public List<Restaurante> listar() {
+        List<Restaurante> restaurantes = restauranteRepository.findAll();
+
+        System.out.println("O nome da cozinha é: ");
+        System.out.println(restaurantes.get(0).getCozinha().getNome());
+
+        return restaurantes;
+    }*/
+
 }
