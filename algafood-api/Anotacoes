@@ -161,7 +161,7 @@ Podemos externalizar nossas querys pra deixar o código mais limpo, pra isso é 
             </query>
         </named-query>   
 
-Para fazer consultas personalizadas, voce cria uma classe chamada objetoRepositoryImpl , näo precisa extender a obejatoRepository, só declarar o método nomeRepositoryImpl que o spring tem a inteligencia de fazer essa "amarração". (Implementação customizada). O impl faz a magia acontecer
+Para fazer consultas personalizadas, voce cria uma classe chamada objetoRepositoryImpl , näo precisa extender a obejatoRepository, só declarar o método nomeRepositoryImpl que o spring tem a inteligência de fazer essa "amarração". (Implementação customizada). O impl faz a magia acontecer
 
 Consultas DINAMICAS
 
@@ -173,7 +173,7 @@ O Spring Data jpa implementou isso na sua API. Ele encapsula um filtro e pode se
 
 @AllArgsConstructor = Cria um construtor recebendo a variável e fazendo a devida atribuição.
 O Repository terá que herdar essa especificação JpaSpecificationExecutor<T>
-Cada especificação cria um predicato.
+Cada especificação cria um predicatE.
 Rever Aula 5.20
 
 -----> Modulo 06
@@ -182,15 +182,15 @@ Mapeamento bidirecional serve pros dois terem acesso aos dados um do outro. Um m
 Muito importante o conceito de dono da associação, seria quem manda na associação, quem tem referencia a sobre o outro na tabela é o dono.
 O Mapeamento tem quer feito de acordo em como ta no banco. Pra exibir ou não serializando, ai não faz diferenca. 
 o @JsonIgnore serve para nós não termos o problema na hora de serializar ao que tenha mapeamento bidirecional.
-Nem sempre é necessário usar o mapamento bidirecional, inclusive é uma pratica ruim fazer se não for necessário.
-A diceração da seta serve pra dizer quem tem acesso ao o que, unidirecional ou bidirecional (o mappedy by ajuda na bidireção de acesso da classe).
+Nem sempre é necessário usar o mapeamento bidirecional, inclusive é uma pratica ruim fazer se não for necessário.
+A direção da seta serve pra dizer quem tem acesso ao o que, unidirecional ou bidirecional (o mappedy by ajuda na bidireção de acesso da classe).
 
 No modelo ManyToMany devemos criar uma tabela de associação entre as duas entidades. Existe a tabela, mas não existe a classe. Como a gente ta usando o gerador de esquema, ele vai gerar essa tabela.
 
-Neste exemplo, nosso modelo de dominio da aplicação (entidades - modelo de dominio) também esta sendo usado como Modelo de representação do recurso (modelo da api dto).
+Neste exemplo, nosso modelo de domínio da aplicação (entidades - modelo de domínio) também esta sendo usado como Modelo de representação do recurso (modelo da api dto).
 
-Componentizar nesse caso significa pegar uma classe e subdividir de duas classes ou mais. Diminui a dependencia entre elas e uma pode ser reutilizada por outras classes.
-Objetos embutidos/encorporados. 
+Componentizar nesse caso significa pegar uma classe e subdividir de duas classes ou mais. Diminui a dependência entre elas e uma pode ser reutilizada por outras classes.
+Objetos embutidos/incorporados. 
 
 @Embeddable - classe a ser incorporada, ela tem a capacidade de ser incorporada a uma classe. É uma clase parte de uma entidade e não uma entidade em si. Todas as propriedades dessa classe é refletida na tabela da entidade na qual incorpora. 
 
@@ -198,7 +198,7 @@ Objetos embutidos/encorporados.
 
 Como restaurante tem uma chave estrangeira com cidade, precisamos adicionar a cidade, e consequentemente o estado ANTES de adicionar o restaurante.
 
-@JsonIgnore - ignora na hora de representar a serializacao
+@JsonIgnore - ignora na hora de representar a serializarão
 
 LocalDateTime - Data hora - sem fuso horário (timestamp)
 
@@ -206,6 +206,40 @@ LocalDateTime - Data hora - sem fuso horário (timestamp)
 
 UTC - gmt =0 , estamos no gmt -3 .
 
-Eager Loading
+Eager Loading - Todas as relações que terminam com ToOne, por padrão, usam a estratégia Eager Loaging (carregamento antecipado). Quando uma instancia de restaurante é carregada no banco de dados, ele vai carregar também as associaçÕes que usam o Eager Loaging (cozinha nesse caso). Para cada restaurante da lista que buscou, o JPA vai buscar a cozinha correspondente a esse restaurante. Independe ou não se vai precisar (carregamento ansioso). Nem sempre é ruim. Tem que analisar. Ele tem uma cache, então, se for um select repetido, ele não faz duas vezes. Carrega junto, pode ser um select ou vários. Depende do JPA. No final carrega ansiosamente.
+
+
+Lazy Loading - (carregamento preguiçoso) - Carregamento somente quando é necessário usar a associação/entidade. Tem que pensar/avaliar. Por padrão, quem usa ToMany é lazy.
+
+Tem sempre o trade off, JPA/JAVA não é lerdo por isso, lerdo é quem não sabe usar.
+
+CONCLUSÃO: SEMPRE FIQUE BASTANTE ATENTO AOS SELECTS QUE ESTÃO SENDO GERADOS. 
+
+PROBLEMA DO N+1: Pra casa restaurante gera um select de forma de pagamento. Se tiver 1000 restaurantes, gera 1000 seletos. Isso é preocupante. 
+
+Nesse nosso caso, mesmo sem usar cozinha, ele ta sendo carregado, problema do n+1. Isso ocorre, pq nesse caso, ManyToOne tem estratégia Eager Loading.
+Para mudar isso, é só add o fetch = lazzy.  
+
+Atenção, o que Indica se a gente ta usando ou não de um objeto, é chamar um método do objeto (da instancia do obj), ex getNome(). Só chamar o objeto não é usar.
+
+O JPA, quando vê que não é pra carregar um objeto (porque é lazy), ele cria dinamicamente, em tempo de execução, um proxy e instancia no objeto (que é lazy). E quando chama o getNome() ele chama a classe maluca que é uma subclasse de cozinha (nesse caso). 
+
+@JsonIgnoreProperties - ignora propriedades dentro da instancia atribuída a variável. //Eu quero exibir a variável lazy, preciso então ignorar somente uma propriedade dentro do objeto, e essa propriedade é gerada em tempo de execução. 
+
+Se for ToMany é Lazy Loading, logo se quiser alterar tem que alterar o fetch pra Eager Loading. Porém pode continuar o problema do N+1. Na prática, dificilmente a gente alterar algo pra Eager. É perigoso. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
