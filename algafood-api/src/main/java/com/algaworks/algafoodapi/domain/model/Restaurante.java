@@ -49,7 +49,7 @@ public class Restaurante  {
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataAtualizacao;
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToMany //(fetch = FetchType.EAGER) //Exemplo de como alterar pra Eager Loading - Ja que o padrão ToMany é Lazy -
     @JoinTable(name = "restaurante_forma_pagamento", //para customizar o nome da tabela intermediaria
             joinColumns = @JoinColumn (name = "restaurante_id"), //(Ja que estamos mapeando restaurante) Define o nome da coluna na tabela intermediaria que associa em restaurante
