@@ -228,7 +228,7 @@ O JPA, quando vê que não é pra carregar um objeto (porque é lazy), ele cria 
 
 Se for ToMany é Lazy Loading, logo se quiser alterar tem que alterar o fetch pra Eager Loading. Porém pode continuar o problema do N+1. Na prática, dificilmente a gente alterar algo pra Eager. É perigoso. 
 
-
+FIM DA 6.4
 
 
 
