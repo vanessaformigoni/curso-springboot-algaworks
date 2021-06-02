@@ -228,7 +228,39 @@ O JPA, quando vê que não é pra carregar um objeto (porque é lazy), ele cria 
 
 Se for ToMany é Lazy Loading, logo se quiser alterar tem que alterar o fetch pra Eager Loading. Porém pode continuar o problema do N+1. Na prática, dificilmente a gente alterar algo pra Eager. É perigoso. 
 
-FIM DA 6.4
+-----> Pool de conexões e Flyway
+
+Fluxo sem Pool de Conexões: request -> aplicação web -> abre connexão com o bd-> banco de dados -> fecha conexão com o bd.
+
+Um pool de conexões é um componente de software/biblioteca que mantem um conjunto de conexões (ou um bd) prontas  para reutilização em uma aplicação. A conexão é reutilizada, reduzindo assim o tempo gasto na abertura e fechamento de conexões. 
+
+Se a conexão não esta sendo usada, ela fica no estado de Idle (ociosa). 
+
+O tempo de abrir e fechar conexão é só no começo, depois com o pool, só tem o gerenciamento dos recursos/conexões que tem no pool. Se bater mais requests que conexões, dependendo da configuração ele vai agir de uma forma. Um exemplo é criar novas conexões abrindo e fechando (para o resildual de requests). Se ultrapassar o maximo de conexões estabelecidas, uma resquest vai ficar esperando. Tudo vai depender das configurações do pool, como por exemplo o tratamento das conexões excedentes. Tudo é configuravel e amavel.
+
+No nosso projeto, o pool já esta configurado em 10, inplicitamente pelo próprio spring boot (Lá na dependencia data jpa e filhos).  A dependencia Hikari cp (conection pool) - Solução padrão inciada com 10. 
+
+
+spring.datasource.hikari.maximum-pool-size=5 //maximo de conexoes
+spring.datasource.hikari.minimun-idle=3 //minimo de conexoes - nao funcionou 
+spring.datasource.hikari.idle-timeout=10000 - tempo em ms pra fechar as conexoes excedentes. 
+
+A recomendação dele é sempre usar o padrão, ir monitorando em produçao e de acordo com a necessidade vai alterando.
+
+Com o Schema Generation em prod não é bom, porque qualquer alteração na tabela, vai deletar tudo (todas informações) pra criar de novo. É ruim o spring.jpa.hibernate.ddl-auto=create. Então uma solução é usar update, que não fica dropando as tabelas, só atualiza. Porém se alterar o nome de uma coluna, ele cria outra, não atualiza. Não da pra confiar em produçao no Schema generation.
+
+Vamos usar o flyway pra fazer versionamento de schemas de banco de dados.
+Para usar o Flayway basta adicionar a dependencia. 
+Se eu quiser deletar o arquivo atual, V002, preciso deletar também no flaway_schema_history.
+
+Na V003 temos um script migracao que cria uma nova tabela e faz o remanejamento de dados. Nesses casos podemos usar insert, update na migraçao.
+Agora temos o problema que nos mexemos muito nas tabelas em desenvolvimento pra criar o script de migração, e voltar tudo, será um problema, então alguma das soluções seria:
+
+- ter criado um backup antes de comecar (dump), drop e restora o backup.
+- dropa o database, 
+
+
+
 
 
 
