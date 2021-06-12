@@ -1,4 +1,4 @@
-package com.algaworks.algafoodapi.api.controller;
+package com.algaworks.algafoodapi.descartados;
 
 import static com.algaworks.algafoodapi.infrastructure.repository.spec.RestauranteSpecs.comFreteGratis;
 import static com.algaworks.algafoodapi.infrastructure.repository.spec.RestauranteSpecs.comNomeSemelhante;
