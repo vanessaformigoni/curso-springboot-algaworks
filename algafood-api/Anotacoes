@@ -282,11 +282,14 @@ Voltar nas classes itempedido e pedido. Aula 07:12 e o V007
 
 -----> Tratamento e modelagem de erros na API
 
-Se a excessão é lançada e não é tratada, ela aparece "grande e feia - trace " na resposta, e como status code 500. Se a gente captura e trata, ela aparece como a gente quer. Exemplo, 404 como deveria nessa situação, porque foi erro do cliente tentar deletar, uma cozinha que não existe. Usando a anotação @ResponseStatus(HttpStatus.NOT_FOUND) - en cima da exceção por exemplo, você diz que, se aquela excessão for chamada, ela irá retornar o 404, além do texto "grande e feio - trace" na resposta. Posso mudar a mensagem também do stack trace @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = = "Entidade não encontrada"). Ao anotar o METODO, é a mesma lógica, @ResponseStatus(HttpStatus.NO_CONTENT) //Em caso de sucesso, retorna isso. A DESVANTAGEM do @ResponseStatus e não poder alterar o corpo da mensagem, ela apenas deixa você mudar a mensagem com o 'reason'. É um pouco mais elegante com isso. Com a @ResponseStatusExcepiton, você não precisa criar a classe da exceção. Você simplesmente "lança codigo e texto" -> throw new ResponseStatusException(HttpStatus.NOT_FOUND,String.format("Não existe cadastro de cozinha com esse código %d", cozinhaId)); A grande vantagem que vi dessa responseStatus é poder retornar diferente status code pra uma mesma excessão. 
+Se a excessão é lançada e não é tratada, ela aparece "grande e feia - trace " na resposta, e com status code 500 - Se for erro da aplicacao. Se a gente captura e trata, ela aparece como a gente quer. Exemplo, 404 como deveria nessa situação, porque foi erro do cliente tentar deletar uma cozinha que não existe. Usando a anotação @ResponseStatus(HttpStatus.NOT_FOUND) - en cima da exceção por exemplo, você diz que, se aquela excessão for lancada, ela irá retornar o 404, além do texto "grande e feio - trace" na resposta. Posso mudar a menssage também do stack trace @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = = "Entidade não encontrada"). Ao anotar o METODO, é a mesma lógica, @ResponseStatus(HttpStatus.NO_CONTENT) //Em caso de sucesso, retorna isso. A DESVANTAGEM do @ResponseStatus e não poder alterar o corpo da mensagem, ela apenas deixa você mudar a mensagem com o 'reason'. É um pouco mais elegante com isso.
+
+Com a @ResponseStatusExcepiton, você não precisa criar a classe da exceção "EntidadeEmUsoException" e etc. Você simplesmente "lança codigo e texto" -> throw new ResponseStatusException(HttpStatus.NOT_FOUND,String.format("Não existe cadastro de cozinha com esse código %d", cozinhaId)); A grande vantagem que vi dessa responseStatus é poder retornar diferente status code pra uma mesma excessão. 
+
+Ele NAO RECOMENDA que em classe de dominio, seja passado um código http. A camada de serviço não deve ter conhecimdo do protocolo http, o que será respondido na api. A classe de serviço deve existir mesmo se a API não existir. Isso serve até pra classe de excessão. Se é código de negocio, não deve saber da API. Mas se tiver e menos pior, agora na classe de SERVICO, não pode. A maior vantagem é poder customizar o https code, mas não é uma boa pratica.
 
 
-
- 
+ parei na 8.5
 
 
 

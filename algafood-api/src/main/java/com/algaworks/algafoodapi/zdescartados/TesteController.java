@@ -1,7 +1,4 @@
-package com.algaworks.algafoodapi.descartados;
-
-import static com.algaworks.algafoodapi.infrastructure.repository.spec.RestauranteSpecs.comFreteGratis;
-import static com.algaworks.algafoodapi.infrastructure.repository.spec.RestauranteSpecs.comNomeSemelhante;
+package com.algaworks.algafoodapi.zdescartados;
 
 import java.math.BigDecimal;
 import java.util.List;

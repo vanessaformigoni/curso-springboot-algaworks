@@ -1,10 +1,7 @@
-package com.algaworks.algafoodapi.descartados;
+package com.algaworks.algafoodapi.zdescartados;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.lang.module.ResolutionException;
 
 //@ResponseStatus(value = HttpStatus.NOT_FOUND)//, reason = "Entidade não encontrada") //não vou usar mais
 public class __EntidadeNaoEncontradaException extends ResponseStatusException {
