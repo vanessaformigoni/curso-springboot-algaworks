@@ -259,13 +259,39 @@ Agora temos o problema que nos mexemos muito nas tabelas em desenvolvimento pra 
 - ter criado um backup antes de comecar (dump), drop e restora o backup.
 - dropa o database, 
 
+Prorpeties para gerar scripts do banco 
+#spring.jpa.properties.javax.persistence.schema-generation.scripts.action=create
+#spring.jpa.properties.javax.persistence.schema-generation.scripts.create-target=src/main/resources/ddl.sql
+
+Eles geram o script todinho. Tem que revisar.
+
+Olhar melhor a V004.
+
+AfterMigrate arquivo de callback (não é migração) que é chamado em uma fase após a migracao. No flayway existem várias fases, uma é a afterMigrate que é chamado aós a migração. 
+No MySql o insert ignore, tenta inserir, se der algum erro, ele ignora o erro e segue. Com isso, eu posso reiniciar a aplicação que a base se mantem igual (não reseta), pode ser o que se quer. 
+Agora se eu quiser que os dados sempre voltem ao estado inicial, devo fazer o seguinte: Vai deletar todas as tabelas, e depois inserir. 
+Lembrando de fazer na seguinte ordem: desabilitar as chaves estrangeiras, porque se não dará erro "set foreign_key_checks=0;" deletar as tabelas "delete from cidade;" habilitas as as chaves estrangeiras "set foreign_key_checks=1"; atualizar os ids para comecar do 1 de novo (não obrigatorio) "alter table cidade auto_increment = 1;"  Agora sim faz os inserts "insert into cozinha (id, nome) values (1, 'Tailandesa');". Coloca tudo no afterMigrate.sql
+Deixar o afterMigrate assim é perigoso, porque quando subir pra prod, ele vai acabar inserindo esses dados, e não queremos. Então devemos colocar dentro de outra pasta. Para ignorar em prod essa nova pasta,com essa massa de dados, faremos depois um novo properties onde só irá ler as migrações e não lerá o atferMigration.sql. Adicona o "spring.flyway.locations=classpath:db/migration,classpath:db/testdata"
+
+Uma migração pode dar erro. Se eu criar um script errado, ele aparece no schema history com success=0. Mesmo se ela tiver falhado, a gente não pode alterar diretamente no codigo. Opcao 01 - Deleta e criar de novo. Mas se a migração for maior, exemplo, 05 criaçoes de tabela, cria duas com sucesso e a 3, com falha. Eu vou ter que desfazer o que foi feito na mão, o flayway não genrencia isso. Só depois exlui a migração na flayway_schema_history. Em produção, tem que fazer um backup antes. Outra forma, rodar o maven pelo terminal. ./mvnw flayway:repa
+
+Voltar nas classes itempedido e pedido. Aula 07:12 e o V007
 
 
 
 
+-----> Tratamento e modelagem de erros na API
+
+Se a excessão é lançada e não é tratada, ela aparece "grande e feia - trace " na resposta, e como status code 500. Se a gente captura e trata, ela aparece como a gente quer. Exemplo, 404 como deveria nessa situação, porque foi erro do cliente tentar deletar, uma cozinha que não existe. Usando a anotação @ResponseStatus(HttpStatus.NOT_FOUND) - en cima da exceção por exemplo, você diz que, se aquela excessão for chamada, ela irá retornar o 404, além do texto "grande e feio - trace" na resposta. Posso mudar a mensagem também do stack trace @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = = "Entidade não encontrada"). Ao anotar o METODO, é a mesma lógica, @ResponseStatus(HttpStatus.NO_CONTENT) //Em caso de sucesso, retorna isso. A DESVANTAGEM do @ResponseStatus e não poder alterar o corpo da mensagem, ela apenas deixa você mudar a mensagem com o 'reason'. É um pouco mais elegante com isso. Com a @ResponseStatusExcepiton, você não precisa criar a classe da exceção. Você simplesmente "lança codigo e texto" -> throw new ResponseStatusException(HttpStatus.NOT_FOUND,String.format("Não existe cadastro de cozinha com esse código %d", cozinhaId)); A grande vantagem que vi dessa responseStatus é poder retornar diferente status code pra uma mesma excessão. 
 
 
 
+ 
+
+
+
+
+----- ao terminar a oitava secao, retornar em Voltar nas classes itempedido e pedido. Aula 07:12 e o V007
 
 
 
