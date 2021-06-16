@@ -289,7 +289,13 @@ Com a @ResponseStatusExcepiton, você não precisa criar a classe da exceção "
 Ele NAO RECOMENDA que em classe de dominio, seja passado um código http. A camada de serviço não deve ter conhecimdo do protocolo http, o que será respondido na api. A classe de serviço deve existir mesmo se a API não existir. Isso serve até pra classe de excessão. Se é código de negocio, não deve saber da API. Mas se tiver e menos pior, agora na classe de SERVICO, não pode. A maior vantagem é poder customizar o https code, mas não é uma boa pratica.
 
 
- parei na 8.5
+Impacto: quando adicionamos um estado que não existe, está retornando 404 (not found), mas o recurso existe (o recurso associado ao ID existe, mas é a request que esta errada) delete /cidades/id , então não deve retornar isso. Tem que ser 400 (bad request). O recurso é o item que representa aquele id. Se o recurso não existir, ai sim retorna 400 not found. 
+
+É uma boa pratica ter uma representacao padrao de erro da api.
+
+Para resolver isso, ele vai criar uma excessão mais genérica chamada NegocioException que servirá pra qualquer erro de negocio que não seja específico, e vamos mapear como bad request.
+
+Na camada de controller eu posso pensar nos https status code, na camada de dominio Não.
 
 
 
