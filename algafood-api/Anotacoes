@@ -297,6 +297,8 @@ Para resolver isso, ele vai criar uma excessão mais genérica chamada NegocioEx
 
 Na camada de controller eu posso pensar nos https status code, na camada de dominio Não.
 
+comecar na 8.10
+
 
 
 
