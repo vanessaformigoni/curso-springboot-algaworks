@@ -4,6 +4,7 @@ import com.algaworks.algafoodapi.domain.exception.EntidadeNaoEncontradaException
 import com.algaworks.algafoodapi.domain.exception.NegocioException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,7 +37,7 @@ public class ApiExceptionHandler {
                 .body(problema);
     }
 
-    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> tratarHttpMediaTypeNotSupportedException() {
 
         Problema problema = Problema.builder()

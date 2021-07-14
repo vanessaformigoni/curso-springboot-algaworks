@@ -297,10 +297,17 @@ Para resolver isso, ele vai criar uma excessão mais genérica chamada NegocioEx
 
 Na camada de controller eu posso pensar nos https status code, na camada de dominio Não.
 
-comecar na 8.10
+Quando uma excessão herda de outra, o response status também é herdado, então não preciso colocar. A pergunta a se fazer na hora de saber se a exception está suficiente é, se "quem vai usar meu código precisa reagir diferente a dependendo do que levou a gerar a exception?? 
 
 
+Vamos transformar a classe EntidadeNaoEncontradaException em abstrata, assim a gente não poderá mais instancia-la, serve pra nossa hierarquia, mas não podemos instanciar mais. Mas é importante ter ela na hierarquia porque as vezes, na hora de usar uma classe de serviço, a gente pode querer fazer um catch dela, ou seja, um tratamento mais genérico. 
 
+Agora vamos criar um método que trata as excessões que acontecem dentro do proprio controlador, e isso será feito com o @ExceptionHandler. Vamos capturar a excesão e tratar com o uso do responseEntity.
+
+O Builder é um padrao de projeto pra contruir objeto de uma forma mais simples, fluente. 
+
+A exceptionHandler é bem bacana para customizar a resposta do erro, mas desse jeito de agora, ela ta só em um controller. Queremos fazer de um jeito que de pra todas classes usarem: Da pra criar um ExceptionHandler global, pra isso, crio uma classe que será genérica, e anoto com @ControllerAdvice, essa anotação diz que dentro desse componente nós podemos adicionar exceptionHandler que as exceções de todos os outros controladores do nosso projeto serão tratadas aqui. Será um ponto central de exceptionHandler. Ainda é possivel customizar o corpo da resposta. É possivel inclusive, tratar exceptions que não foram causadas por nós. 
+8.13 terminei
 
 ----- ao terminar a oitava secao, retornar em Voltar nas classes itempedido e pedido. Aula 07:12 e o V007
 
