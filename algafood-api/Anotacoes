@@ -307,7 +307,9 @@ Agora vamos criar um método que trata as excessões que acontecem dentro do pro
 O Builder é um padrao de projeto pra contruir objeto de uma forma mais simples, fluente. 
 
 A exceptionHandler é bem bacana para customizar a resposta do erro, mas desse jeito de agora, ela ta só em um controller. Queremos fazer de um jeito que de pra todas classes usarem: Da pra criar um ExceptionHandler global, pra isso, crio uma classe que será genérica, e anoto com @ControllerAdvice, essa anotação diz que dentro desse componente nós podemos adicionar exceptionHandler que as exceções de todos os outros controladores do nosso projeto serão tratadas aqui. Será um ponto central de exceptionHandler. Ainda é possivel customizar o corpo da resposta. É possivel inclusive, tratar exceptions que não foram causadas por nós. 
-8.13 terminei
+
+Exitem várias exceptions que são internas do spring mvc, como HttpMediaTypeNotSupported, para elas, usamos o ResponseEntityExceptionHandler, sem precisar tratar uma a uma. E ainda podemos sobreescrever um corpo atraves do handleExceptionInternal
+
 
 ----- ao terminar a oitava secao, retornar em Voltar nas classes itempedido e pedido. Aula 07:12 e o V007
 
