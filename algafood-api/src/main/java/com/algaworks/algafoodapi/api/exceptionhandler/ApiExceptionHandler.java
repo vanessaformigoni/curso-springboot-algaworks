@@ -22,7 +22,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.ENTIDADE_NAO_ENCONTRADA;
         String detail = ex.getMessage();
 
-        Problem problem = createProblemBuilder(status, problemType,detail).build();
+        Problem problem = createProblemBuilder(status, problemType, detail).build();
 
 //        Problem problem = Problem.builder()
 //                .status(status.value())
@@ -37,15 +37,25 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntidadeEmUsoException.class)
     public ResponseEntity<?> handleEntidadeEmUsoException(EntidadeEmUsoException ex, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ProblemType problemType = ProblemType.ENTIDADE_EM_USO;
+        String detail = ex.getMessage();
 
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(),
+        Problem problem = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(),
                 HttpStatus.CONFLICT, request);
     }
 
-    @ExceptionHandler(NegocioException.class)
+    @ExceptionHandler(NegocioException.class) //esse
     public ResponseEntity<?> handleNegocioException(NegocioException ex, WebRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ProblemType problemType = ProblemType.ERRO_NEGOCIO;
+        String detail = ex.getMessage();
 
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(),
+        Problem problem = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(),
                 HttpStatus.BAD_REQUEST, request);
     }
 
@@ -68,8 +78,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private Problem.ProblemBuilder createProblemBuilder(HttpStatus status,
-            ProblemType problemType, String detail) {
-
+                                                        ProblemType problemType, String detail) {
         return Problem.builder()
                 .status(status.value())
                 .type(problemType.getUri())
