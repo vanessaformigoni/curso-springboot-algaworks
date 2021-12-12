@@ -5,13 +5,18 @@ import com.algaworks.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.NegocioException;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.service.CadastroRestauranteService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -63,27 +68,39 @@ public class RestauranteController {
 
     @PatchMapping("/{restauranteId}") //Ele vai ensinar futuramente a fazer de forma mais elegante.
     public Restaurante atualizarParcial(@PathVariable Long restauranteId,
-                                        @RequestBody Map<String, Object> campos) {
+                                        @RequestBody Map<String, Object> campos , HttpServletRequest request) {
 
         Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 
-        merge(campos, restauranteAtual); //funcao: mesclar os dados do campos para o restaurante atual
+        merge(campos, restauranteAtual , request); //funcao: mesclar os dados do campos para o restaurante atual
 
         return atualizar(restauranteId, restauranteAtual); //muito bom isso
     }
 
-    private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) { //Aula 4.33 (final)/34
-        ObjectMapper objectMapper = new ObjectMapper(); //É do jackson. Faz a conversão (serializacao) de JSON em Ojetos Java e vice versa.
-        Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class); //Converta esses dadosOrigem pra um tipo Restaurante.
+    private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino,
+                       HttpServletRequest request) { //Aula 4.33 (final)/34
+        ServletServerHttpRequest servletServerHttpRequest = new ServletServerHttpRequest(request);
 
-        dadosOrigem.forEach((nomePropriedade, valorpropriedade) -> { //Agora eu só percorro o que foi passado pelo consumidor da Api.
-            Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
-            field.setAccessible(true); //Mesmo a variável sendo privada, quero acessar ela. Quebra de acesso.
+        try {
+            ObjectMapper objectMapper = new ObjectMapper(); //É do jackson. Faz a conversão (serializacao) de JSON em Ojetos Java e vice versa.
+            objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
-            Object novoValor = ReflectionUtils.getField(field,restauranteOrigem);
-            ReflectionUtils.setField(field,restauranteDestino,novoValor);
+            Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class); //Converta esses dadosOrigem pra um tipo Restaurante.
 
-        });
+
+            dadosOrigem.forEach((nomePropriedade, valorpropriedade) -> { //Agora eu só percorro o que foi passado pelo consumidor da Api.
+                Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+                field.setAccessible(true); //Mesmo a variável sendo privada, quero acessar ela. Quebra de acesso.
+
+                Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
+                ReflectionUtils.setField(field, restauranteDestino, novoValor);
+
+            });
+        }catch (IllegalArgumentException e) {
+            Throwable rootCause = ExceptionUtils.getRootCause(e);
+            throw new HttpMessageNotReadableException(e.getMessage(),rootCause, servletServerHttpRequest);
+        }
     }
 
     /*  @GetMapping //Metodo para entender o Lazy Loading
