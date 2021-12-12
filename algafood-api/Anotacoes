@@ -312,6 +312,13 @@ Exitem várias exceptions que são internas do spring mvc, como HttpMediaTypeNot
 
 Conhecendo a RFC 7807 - É uma espeficicação que tenta padronizar o formato de resposta com os detalhes do erro (Problem Details for HTTP APIs). Ele tem um corpo com: status, type - uri que identifica o tipo do problema, title - descreve o tipo do erro em texto legivel, detail - descricao mais detalhada e instance - opcional uri que está causando o erro exatamente. Ainda podemos adicionar mais informaçÕes como timestamp e novas propriedades que acharmos necessários.
 
+@JsonInclude(JsonInclude.Include.NON_NULL) - só inclua na reprentação json se não estiver  null
+
+Commons-lang é uma biblioteca no apache que ajuda a manipular de maneira simplificada com strings, numeros, exceptions e etc.
+
+Se eu incluir um parametro na request que não existe no objeto, ele simplismente será ignorado.
+Na especificação RFC voce pode estender as propriedades pra melhorar a vida do consumidor da api. 
+
 ----- ao terminar a oitava secao, retornar em Voltar nas classes itempedido e pedido. Aula 07:12 e o V007
 
 
