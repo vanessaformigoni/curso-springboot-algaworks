@@ -333,6 +333,8 @@ Validar os dados que sao recebidos de uma rest api com o Bean Validation do jee.
 
 Só a restrição (constraint) já funciona, porem lá no final, antes de salvar no banco, quando for tentar persistir, é possivel fazer isso logo no começo, por isso vamos usar o @Valid, que irá pegar já no começo. 
 
+BindingResult bindingResult = ex.getBindingResult(); serve para armazenar as violações de coinstrants de validação. Temos acesso as propriedades violadas.
+
 
 
 
