@@ -319,7 +319,19 @@ Commons-lang é uma biblioteca no apache que ajuda a manipular de maneira simpli
 Se eu incluir um parametro na request que não existe no objeto, ele simplismente será ignorado.
 Na especificação RFC voce pode estender as propriedades pra melhorar a vida do consumidor da api. 
 
+
+----- seria bom rever essa seção
+
 ----- ao terminar a oitava secao, retornar em Voltar nas classes itempedido e pedido. Aula 07:12 e o V007
+
+
+
+
+----->  Validação do modelo com Bean Validation
+
+Validar os dados que sao recebidos de uma rest api com o Bean Validation do jee. Tem objetivo de facilitar a validação de pripriedades em objetos em java. Usamos anotações nas CLASSSES DE MODELOS pra definir as RESTRIÇÕES QUE QUEREMOS em cada propriedade. O bean validadion é apenas uma especificação e nós precisamos de uma implementação pra usar.O projeto Hibernata Validation é uma implementação de referencia da especificação. 
+
+Só a restrição (constraint) já funciona, porem lá no final, antes de salvar no banco, quando for tentar persistir, é possivel fazer isso logo no começo, por isso vamos usar o @Valid, que irá pegar já no começo. 
 
 
 
