@@ -8,7 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,9 +26,13 @@ public class Restaurante  {
     private Long id;
 
     @NotNull
+    @NotEmpty
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 
+    //@DecimalMin("0")
+    @PositiveOrZero
     private BigDecimal taxaFrete;
 
     //@JsonIgnore
