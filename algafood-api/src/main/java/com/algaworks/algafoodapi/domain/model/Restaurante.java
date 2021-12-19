@@ -10,6 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,18 +28,19 @@ public class Restaurante  {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @NotBlank(groups = Groups.CadastroRestaurante.class)
+    @NotBlank//groups = Groups.CadastroRestaurante.class) //Usando grupos pra fazer a validacao
     @Column(nullable = false)
     private String nome;
 
     //@DecimalMin("0")
-    @PositiveOrZero(groups = Groups.CadastroRestaurante.class)
+    @PositiveOrZero
     private BigDecimal taxaFrete;
 
     //@JsonIgnore
    // @JsonIgnoreProperties("hibernateLazyInitializer")
     @Valid
-    @NotNull(groups = Groups.CadastroRestaurante.class)
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+    @NotNull
     @ManyToOne//(fetch = FetchType.LAZY) //Só carrega essa associacao caso precise.
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
