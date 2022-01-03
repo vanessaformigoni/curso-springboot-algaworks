@@ -33,7 +33,7 @@ public class Restaurante  {
     private String nome;
 
     //@DecimalMin("0")
-    @PositiveOrZero
+    @PositiveOrZero(message = "{TaxaFrete.invalida}")
     private BigDecimal taxaFrete;
 
     //@JsonIgnore
