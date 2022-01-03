@@ -2,7 +2,6 @@ package com.algaworks.algafoodapi.infrastructure.repository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -13,8 +12,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import com.algaworks.algafoodapi.domain.Repository.RestauranteRepository;
-import com.algaworks.algafoodapi.domain.Repository.RestauranteRepositoryQueries;
+import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
+import com.algaworks.algafoodapi.domain.repository.RestauranteRepositoryQueries;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;

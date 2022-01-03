@@ -1,6 +1,6 @@
 package com.algaworks.algafoodapi.api.controller;
 
-import com.algaworks.algafoodapi.domain.Repository.CozinhaRepository;
+import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.service.CadastroCozinhaService;
 import org.springframework.beans.BeanUtils;

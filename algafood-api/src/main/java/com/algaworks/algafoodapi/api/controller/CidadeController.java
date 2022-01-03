@@ -1,6 +1,6 @@
 package com.algaworks.algafoodapi.api.controller;
 
-import com.algaworks.algafoodapi.domain.Repository.CidadeRepository;
+import com.algaworks.algafoodapi.domain.repository.CidadeRepository;
 import com.algaworks.algafoodapi.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafoodapi.domain.exception.NegocioException;
 import com.algaworks.algafoodapi.domain.model.Cidade;

@@ -1,6 +1,6 @@
 package com.algaworks.algafoodapi.domain.service;
 
-import com.algaworks.algafoodapi.domain.Repository.EstadoRepository;
+import com.algaworks.algafoodapi.domain.repository.EstadoRepository;
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafoodapi.domain.model.Estado;

@@ -1,6 +1,6 @@
 package com.algaworks.algafoodapi.infrastructure.repository;
 
-import com.algaworks.algafoodapi.domain.Repository.CustomJpaRepository;
+import com.algaworks.algafoodapi.domain.repository.CustomJpaRepository;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
