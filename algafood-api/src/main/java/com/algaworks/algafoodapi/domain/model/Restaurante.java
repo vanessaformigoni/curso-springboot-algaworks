@@ -28,7 +28,7 @@ public class Restaurante  {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @NotBlank(message = "Nome é obrigatorio")//groups = Groups.CadastroRestaurante.class) //Usando grupos pra fazer a validacao
+    @NotBlank//groups = Groups.CadastroRestaurante.class) //Usando grupos pra fazer a validacao
     @Column(nullable = false)
     private String nome;
 
