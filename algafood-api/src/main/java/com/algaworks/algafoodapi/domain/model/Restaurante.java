@@ -1,6 +1,7 @@
 package com.algaworks.algafoodapi.domain.model;
 
 import com.algaworks.algafoodapi.core.validation.Groups;
+import com.algaworks.algafoodapi.core.validation.TaxaFrete;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,8 +33,10 @@ public class Restaurante  {
     @Column(nullable = false)
     private String nome;
 
+    @NotNull
     //@DecimalMin("0")
-    @PositiveOrZero
+   //@PositiveOrZero
+    @TaxaFrete
     private BigDecimal taxaFrete;
 
     //@JsonIgnore

@@ -335,6 +335,18 @@ Só a restrição (constraint) já funciona, porem lá no final, antes de salvar
 
 BindingResult bindingResult = ex.getBindingResult(); serve para armazenar as violações de coinstrants de validação. Temos acesso as propriedades violadas.
 
+Colocando a anotação @valid voce valida em cascada, igual no requestBody. Com o @valid voce valida o objeto no inicio da requisição. Grupos de validaçãp servem pra fazer um agrupamento do que deve ou não ser validado no inicio da request. Valid valida o default, e validated os grupos de marcacao. O valid só valida o que é do dafault (se nao tem nada, é dafault)
+
+O Resource Bundle do spring serve pra customizar mensagens dos beans validations pelo arquivo messages.properties. Agora vamos ver o do BeanValidation. A recomendacao é usar sempre o resource bundle do spring. 
+
+Criando uma constraint (anotação) = Para ser uma constraint, deve ter o @Constraint(validatedBy = { }). E uma anotação do bean validation deve ter esses tres propriedades: 
+
+String message() default "{javax.validation.constraints.PositiveOrZero.message}";
+
+    Class<?>[] groups() default { };
+
+    Class<? extends Payload>[] payload() default { };
+
 
 
 
