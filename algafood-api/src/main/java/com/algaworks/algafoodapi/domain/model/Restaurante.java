@@ -2,6 +2,7 @@ package com.algaworks.algafoodapi.domain.model;
 
 import com.algaworks.algafoodapi.core.validation.Groups;
 import com.algaworks.algafoodapi.core.validation.TaxaFrete;
+import com.algaworks.algafoodapi.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +19,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@ValorZeroIncluiDescricao(valorField = "taxaFrete",
+        descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -35,8 +38,8 @@ public class Restaurante  {
 
     @NotNull
     //@DecimalMin("0")
-   //@PositiveOrZero
-    @TaxaFrete
+    @PositiveOrZero
+    //@TaxaFrete
     private BigDecimal taxaFrete;
 
     //@JsonIgnore
