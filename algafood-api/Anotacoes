@@ -348,6 +348,19 @@ String message() default "{javax.validation.constraints.PositiveOrZero.message}"
     Class<? extends Payload>[] payload() default { };
 
 
+Criando constraints de validação customizadas em nível de classe (e nao propriedade ex @notnull. Vamos fazer algo tipo @Data) =  
+
+
+Um frete negativo deve ser validado na camada dos controladores, e não da persistencia.
+
+
+
+
+--------> 10.1. Introdução aos Testes de Integração e Testes de APIs
+
+Existem vários tipos de softwares - O teste de integração valida o funcionamento dos componentes do software em conjunto. Testamos a integração todos os componentes, não isolamos as dependencias. O cadastro chama o service que excuta a logica de negocio, repositorio, query no bancos e testamos se a conzinha foi cadastrado corretamente. No teste de API - nesse tipo de teste fazemos uma chamada HTTP real na API e esperamos uma resposta, passando pelo controlador, dominio , persistencia e até BD - É um teste END to END. No final testamos se o efeito colateral no estado da aplicação esta conforme esperavamos. Testar o codigo http e etc.
+
+
 
 
 
