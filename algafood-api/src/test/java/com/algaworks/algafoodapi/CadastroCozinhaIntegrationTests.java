@@ -21,7 +21,7 @@ public class CadastroCozinhaIntegrationTests { //testaremos a classe de servico
     private CadastroCozinhaService cadastroCozinhaService;
 
     @Test
-    public void testarCadastroCozinhaComSucesso_QuandoCozinha() { //esse teste esta poluindo o banco, o ideal sera usar um banco exclusivo
+    public void deveAtribuirId_QuandoCadastrarCozinhaComDadosCorretos() { //esse teste esta poluindo o banco, o ideal sera usar um banco exclusivo
         //cenario
         Cozinha novaCozinha = new Cozinha();
         novaCozinha.setNome("Chinesa");
@@ -36,7 +36,7 @@ public class CadastroCozinhaIntegrationTests { //testaremos a classe de servico
     }
 
     @Test(expected = ConstraintViolationException.class)
-    public void testarCadastrarCozinhaSemNome(){
+    public void deveFalhar_QuandoCadastrarCozinhaSemNome(){
         Cozinha novaCozinha = new Cozinha();
         novaCozinha.setNome(null);
         novaCozinha = cadastroCozinhaService.salvar(novaCozinha);
