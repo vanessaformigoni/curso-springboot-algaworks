@@ -2,16 +2,23 @@ package com.algaworks.algafoodapi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.algaworks.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
+import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
+import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.service.CadastroCozinhaService;
 
+import com.algaworks.algafoodapi.domain.service.CadastroRestauranteService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
+import java.math.BigDecimal;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -19,6 +26,9 @@ public class CadastroCozinhaIntegrationTests { //testaremos a classe de servico
 
     @Autowired
     private CadastroCozinhaService cadastroCozinhaService;
+
+    @Autowired
+    private CadastroRestauranteService cadastroRestauranteService;
 
     @Test
     public void deveAtribuirId_QuandoCadastrarCozinhaComDadosCorretos() { //esse teste esta poluindo o banco, o ideal sera usar um banco exclusivo
@@ -40,6 +50,30 @@ public class CadastroCozinhaIntegrationTests { //testaremos a classe de servico
         Cozinha novaCozinha = new Cozinha();
         novaCozinha.setNome(null);
         novaCozinha = cadastroCozinhaService.salvar(novaCozinha);
+    }
+
+    @Test(expected = EntidadeEmUsoException.class)
+    public void deveFalhar_QuandoExcluirCozinhaEmUso(){
+        Cozinha novaCozinha = new Cozinha();
+        novaCozinha.setNome("Chinesa");
+        cadastroCozinhaService.salvar(novaCozinha);
+        Restaurante novoRestaurante = new Restaurante();
+        novoRestaurante.setNome("Bar do Joao");
+        novoRestaurante.setTaxaFrete(BigDecimal.TEN);
+        novoRestaurante.setCozinha(novaCozinha);
+        cadastroRestauranteService.salvar(novoRestaurante);
+
+        cadastroCozinhaService.excluir(novaCozinha.getId());
+    }
+
+    @Test(expected = EntidadeEmUsoException.class)
+    public void deveFalhar_QuandoExcluirCozinhaEmUso2() {
+        cadastroCozinhaService.excluir(1L);
+    }
+
+    @Test(expected = CozinhaNaoEncontradaException.class)
+    public void deveFalhar_QuandoExcluirCozinhaInexistente2() {
+        cadastroCozinhaService.excluir(100L);
     }
 
 }

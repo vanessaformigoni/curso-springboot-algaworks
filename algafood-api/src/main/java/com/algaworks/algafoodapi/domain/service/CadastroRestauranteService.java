@@ -13,7 +13,8 @@ public class CadastroRestauranteService {
     @Autowired
     RestauranteRepository restauranteRepository;
 
-    @Autowired CadastroCozinhaService cadastroCozinhaService;
+    @Autowired
+    CadastroCozinhaService cadastroCozinhaService;
 
     public Restaurante salvar (Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
