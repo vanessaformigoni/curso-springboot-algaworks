@@ -1,25 +1,28 @@
 package com.algaworks.algafoodapi;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.algaworks.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.service.CadastroCozinhaService;
-
 import com.algaworks.algafoodapi.domain.service.CadastroRestauranteService;
+import io.restassured.http.ContentType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static io.restassured.RestAssured.*;
+
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro failsafe
 
     @Autowired
@@ -27,6 +30,27 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
 
     @Autowired
     private CadastroRestauranteService cadastroRestauranteService;
+
+    @LocalServerPort
+    private int port;
+
+    //-------------------TESTE DE API-----------------------
+
+    @Test
+    public void deveRetornarStatus200_QuandoConsultarCozinhas() {
+        enableLoggingOfRequestAndResponseIfValidationFails(); //Faz o log se falhar
+
+        given()
+                .basePath("/cozinhas")
+                .port(port)
+                .accept(ContentType.JSON)
+        .when()
+                .get()
+        .then()
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    //-------------------TESTE DE INTEGRAÇÃO----------------
 
     @Test
     public void deveAtribuirId_QuandoCadastrarCozinhaComDadosCorretos() { //esse teste esta poluindo o banco, o ideal sera usar um banco exclusivo
