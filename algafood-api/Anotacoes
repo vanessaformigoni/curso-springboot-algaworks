@@ -360,10 +360,26 @@ Um frete negativo deve ser validado na camada dos controladores, e não da persi
 
 Existem vários tipos de softwares - O teste de integração valida o funcionamento dos componentes do software em conjunto. Testamos a integração todos os componentes, não isolamos as dependencias. O cadastro chama o service que excuta a logica de negocio, repositorio, query no bancos e testamos se a conzinha foi cadastrado corretamente. No teste de API - nesse tipo de teste fazemos uma chamada HTTP real na API e esperamos uma resposta, passando pelo controlador, dominio , persistencia e até BD - É um teste END to END. No final testamos se o efeito colateral no estado da aplicação esta conforme esperavamos. Testar o codigo http e etc.
 
+Como é um teste de integração, o contexto do spring precisa ser levantado (com os beans, injeção de dependencia). Por isso demora mais. O RunWith faz com que o contexto do spring seja levantando (injeços de dependencias, beans e etc). E o spring boot teste fornece as funcionalidades do spring boot pros nossos testes.
+
+Teste de integração é interessante começar pelo service, e ai testa todas as integrações. 
+
+ @Test(expected = ConstraintViolationException.class) - para testar se vai lançar uma excessão. Espera uma exceção.
+ 
+ Não é interessante fazer o build com os testes de integração, pois eles podem demorar muito, é interessante fazer somente com os unitários. Vamos usar um plugin pra rodar testes de integração.
+
+ ./mvnw test (roda os testes)
+ ./mvnw clean package (gera o .jar da aplicaçao rodando todos os testes até integracao, a não ser que tenha a lib que bloquear os testes)
+ ./mvnw verify (roda os testes de integracao mesmo com a lib)
 
 
+Nos testes de API a gente faz realmente a chamada da api, espera um HTTP pra nosso serviço rest, roda tudo, controlador, servico, repositorio, bd e vai voltar um json e vamos validar se o teste esta sendo bem sucedido ou não.
 
+Para fazer a chamada a API vamos usar uma lib usar rest assured. Lib usada pra validação e test de api.
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) -> para a aplicação de teste levantar um servidor web real para podermos fazer requisiçoes. (um tom cat nesse caso, numa porta aleatoria) e para sabermos a porta, usamos a anotação ->     @LocalServerPort
+
+Log pra logar caso tenha erro -> enableLoggingOfRequestAndResponseIfValidationFails();
 
 
 

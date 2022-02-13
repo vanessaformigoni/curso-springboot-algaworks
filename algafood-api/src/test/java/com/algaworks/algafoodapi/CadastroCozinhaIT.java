@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -37,7 +38,7 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
     //-------------------TESTE DE API-----------------------
 
     @Test
-    public void deveRetornarStatus200_QuandoConsultarCozinhas() {
+    public void deveRetornarStatus200_QuandoConsultarCozinhas() { //Valida o retorno http
         enableLoggingOfRequestAndResponseIfValidationFails(); //Faz o log se falhar
 
         given()
@@ -48,6 +49,21 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
                 .get()
         .then()
                 .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    public void deveConter4Cozinhas_QuandoConsutarCozinhas() { //Valida o body
+        enableLoggingOfRequestAndResponseIfValidationFails(); //Faz o log se falhar
+
+        given()
+                .basePath("/cozinhas")
+                .port(port)
+                .accept(ContentType.JSON)
+        .when()
+                .get()
+        .then()
+                .body("", hasSize(4))
+                .body("nome", hasItems("Indiana","Tailandesa"));
     }
 
     //-------------------TESTE DE INTEGRAÇÃO----------------
