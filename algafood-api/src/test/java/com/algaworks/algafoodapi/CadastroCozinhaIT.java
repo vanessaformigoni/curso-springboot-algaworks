@@ -6,7 +6,9 @@ import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.service.CadastroCozinhaService;
 import com.algaworks.algafoodapi.domain.service.CadastroRestauranteService;
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +39,18 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
 
     //-------------------TESTE DE API-----------------------
 
+    @Before
+    public void setUp() {
+        enableLoggingOfRequestAndResponseIfValidationFails(); //Faz o log se falhar
+        RestAssured.port=port;
+        RestAssured.basePath = "/cozinhas";
+    }
+
     @Test
     public void deveRetornarStatus200_QuandoConsultarCozinhas() { //Valida o retorno http
-        enableLoggingOfRequestAndResponseIfValidationFails(); //Faz o log se falhar
+
 
         given()
-                .basePath("/cozinhas")
-                .port(port)
                 .accept(ContentType.JSON)
         .when()
                 .get()
@@ -53,11 +60,8 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
 
     @Test
     public void deveConter4Cozinhas_QuandoConsutarCozinhas() { //Valida o body
-        enableLoggingOfRequestAndResponseIfValidationFails(); //Faz o log se falhar
 
         given()
-                .basePath("/cozinhas")
-                .port(port)
                 .accept(ContentType.JSON)
         .when()
                 .get()
@@ -100,7 +104,6 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
         novoRestaurante.setTaxaFrete(BigDecimal.TEN);
         novoRestaurante.setCozinha(novaCozinha);
         cadastroRestauranteService.salvar(novoRestaurante);
-
         cadastroCozinhaService.excluir(novaCozinha.getId());
     }
 
