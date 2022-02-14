@@ -20,9 +20,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -68,6 +69,19 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
         .then()
                 .body("", hasSize(4))
                 .body("nome", hasItems("Indiana","Tailandesa"));
+    }
+
+    @Test
+    public void deveRetornarStatus201_QuandoCadastrarCozinha(){
+        given()
+                .body("{ \"nome\":\"Chinesa\" }")
+                .contentType(ContentType.JSON) //Conteudo que estou passando
+                .accept(ContentType.JSON) //O que eu aceito de volta
+        .when()
+                .post()
+        .then()
+                .statusCode(HttpStatus.CREATED.value());
+
     }
 
     //-------------------TESTE DE INTEGRAÇÃO----------------

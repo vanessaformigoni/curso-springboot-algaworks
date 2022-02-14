@@ -356,7 +356,7 @@ Um frete negativo deve ser validado na camada dos controladores, e não da persi
 
 
 
---------> 10.1. Introdução aos Testes de Integração e Testes de APIs
+--------> Introdução aos Testes de Integração e Testes de APIs
 
 Existem vários tipos de softwares - O teste de integração valida o funcionamento dos componentes do software em conjunto. Testamos a integração todos os componentes, não isolamos as dependencias. O cadastro chama o service que excuta a logica de negocio, repositorio, query no bancos e testamos se a conzinha foi cadastrado corretamente. No teste de API - nesse tipo de teste fazemos uma chamada HTTP real na API e esperamos uma resposta, passando pelo controlador, dominio , persistencia e até BD - É um teste END to END. No final testamos se o efeito colateral no estado da aplicação esta conforme esperavamos. Testar o codigo http e etc.
 
@@ -380,6 +380,13 @@ Para fazer a chamada a API vamos usar uma lib usar rest assured. Lib usada pra v
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) -> para a aplicação de teste levantar um servidor web real para podermos fazer requisiçoes. (um tom cat nesse caso, numa porta aleatoria) e para sabermos a porta, usamos a anotação ->     @LocalServerPort
 
 Log pra logar caso tenha erro -> enableLoggingOfRequestAndResponseIfValidationFails();
+
+Metodos de callback -> um método chamado antes de cada teste. 
+
+A ordem que os testes são executadas é aleatório, e devemos tomar cuidado com isso pois, dependendo, um teste pode interferir no outro, para evitar isso, devemos sempre voltar ao estado inicial do banco de dados na hora de fazer os testes. 
+
+
+Aonde eu digo no código que a resposta é json ?
 
 
 
