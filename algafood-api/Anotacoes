@@ -383,7 +383,7 @@ Log pra logar caso tenha erro -> enableLoggingOfRequestAndResponseIfValidationFa
 
 Metodos de callback -> um método chamado antes de cada teste. 
 
-A ordem que os testes são executadas é aleatório, e devemos tomar cuidado com isso pois, dependendo, um teste pode interferir no outro, para evitar isso, devemos sempre voltar ao estado inicial do banco de dados na hora de fazer os testes. 
+A ordem que os testes são executadas é aleatório, e devemos tomar cuidado com isso pois, dependendo, um teste pode interferir no outro, para evitar isso, devemos sempre voltar ao estado inicial do banco de dados na hora de fazer os testes. Uma solução é executar o flyway antes de cada teste (rodar o aftermigrate). flyway.migrate(); 
 
 
 Aonde eu digo no código que a resposta é json ?

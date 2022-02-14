@@ -8,6 +8,7 @@ import com.algaworks.algafoodapi.domain.service.CadastroCozinhaService;
 import com.algaworks.algafoodapi.domain.service.CadastroRestauranteService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.flywaydb.core.Flyway;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,9 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
     @Autowired
     private CadastroRestauranteService cadastroRestauranteService;
 
+    @Autowired
+    private Flyway flyway;
+
     @LocalServerPort
     private int port;
 
@@ -45,6 +49,8 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
         enableLoggingOfRequestAndResponseIfValidationFails(); //Faz o log se falhar
         RestAssured.port=port;
         RestAssured.basePath = "/cozinhas";
+
+        flyway.migrate();
     }
 
     @Test
