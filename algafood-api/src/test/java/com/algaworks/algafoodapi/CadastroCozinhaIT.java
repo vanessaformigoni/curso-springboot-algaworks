@@ -4,19 +4,22 @@ import com.algaworks.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
+import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import com.algaworks.algafoodapi.domain.service.CadastroCozinhaService;
 import com.algaworks.algafoodapi.domain.service.CadastroRestauranteService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.flywaydb.core.Flyway;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import com.algaworks.algafoodapi.util.DatabaseCleaner;
 
 import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
@@ -27,7 +30,8 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) //Levanta um servidor web, um container somente pros testes, não deve ser no contexto "real"
+@TestPropertySource("/application-test.properties")
 public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro failsafe
 
     @Autowired
@@ -36,8 +40,14 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
     @Autowired
     private CadastroRestauranteService cadastroRestauranteService;
 
+//    @Autowired
+//    private Flyway flyway;
+
     @Autowired
-    private Flyway flyway;
+    private DatabaseCleaner databaseCleaner;
+
+    @Autowired
+    private CozinhaRepository cozinhaRepository;
 
     @LocalServerPort
     private int port;
@@ -45,17 +55,19 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
     //-------------------TESTE DE API-----------------------
 
     @Before
-    public void setUp() {
+    public void setUp() { //chamado de callback //executado antes DE CADA teste, faz a preparação antes de cada teste
         enableLoggingOfRequestAndResponseIfValidationFails(); //Faz o log se falhar
         RestAssured.port=port;
         RestAssured.basePath = "/cozinhas";
 
-        flyway.migrate();
+        databaseCleaner.clearTables();
+        prepararDados();
+
+     //   flyway.migrate(); //Chama a migracao do flayway pra limpar o banco e inserir os dados de novo
     }
 
     @Test
     public void deveRetornarStatus200_QuandoConsultarCozinhas() { //Valida o retorno http
-
 
         given()
                 .accept(ContentType.JSON)
@@ -66,15 +78,15 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
     }
 
     @Test
-    public void deveConter4Cozinhas_QuandoConsutarCozinhas() { //Valida o body
+    public void deveConter2Cozinhas_QuandoConsutarCozinhas() { //Valida o corpo da resposta
 
         given()
                 .accept(ContentType.JSON)
         .when()
                 .get()
         .then()
-                .body("", hasSize(4))
-                .body("nome", hasItems("Indiana","Tailandesa"));
+                .body("", hasSize(2))
+                .body("nome", hasItems("Americana","Tailandesa"));
     }
 
     @Test
@@ -90,9 +102,21 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
 
     }
 
+    private void prepararDados() {
+        Cozinha cozinha1 = new Cozinha();
+        cozinha1.setNome("Tailandesa");
+        cozinhaRepository.save(cozinha1);
+
+        Cozinha cozinha2 = new Cozinha();
+        cozinha2.setNome("Americana");
+        cozinhaRepository.save(cozinha2);
+
+    }
+
     //-------------------TESTE DE INTEGRAÇÃO----------------
 
     @Test
+    @Ignore
     public void deveAtribuirId_QuandoCadastrarCozinhaComDadosCorretos() { //esse teste esta poluindo o banco, o ideal sera usar um banco exclusivo
         //cenario
         Cozinha novaCozinha = new Cozinha();
@@ -108,6 +132,7 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
     }
 
     @Test(expected = ConstraintViolationException.class)
+    @Ignore
     public void deveFalhar_QuandoCadastrarCozinhaSemNome(){
         Cozinha novaCozinha = new Cozinha();
         novaCozinha.setNome(null);
@@ -115,6 +140,7 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
     }
 
     @Test(expected = EntidadeEmUsoException.class)
+    @Ignore
     public void deveFalhar_QuandoExcluirCozinhaEmUso(){
         Cozinha novaCozinha = new Cozinha();
         novaCozinha.setNome("Chinesa");
@@ -128,11 +154,13 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
     }
 
     @Test(expected = EntidadeEmUsoException.class)
+    @Ignore
     public void deveFalhar_QuandoExcluirCozinhaEmUso2() {
         cadastroCozinhaService.excluir(1L);
     }
 
     @Test(expected = CozinhaNaoEncontradaException.class)
+    @Ignore
     public void deveFalhar_QuandoExcluirCozinhaInexistente2() {
         cadastroCozinhaService.excluir(100L);
     }
