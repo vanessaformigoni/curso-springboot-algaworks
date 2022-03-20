@@ -26,8 +26,7 @@ import java.math.BigDecimal;
 
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) //Levanta um servidor web, um container somente pros testes, não deve ser no contexto "real"
@@ -99,6 +98,31 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
                 .post()
         .then()
                 .statusCode(HttpStatus.CREATED.value());
+
+    }
+
+    @Test
+    public void deveRetornarRespostaEStatusCorretos_QuandoConsultarCozinhaExistente() {
+        given()
+                .pathParams("cozinhaId", 2)
+                .accept(ContentType.JSON)
+        .when()
+                .get("/{cozinhaId}")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("nome",equalTo("Americana"));
+
+    }
+
+    @Test
+    public void deveRetornarRespostaEStatus404_QuandoConsultarCozinhaInexistente() {
+        given()
+                .pathParams("cozinhaId", 100)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/{cozinhaId}")
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value());
 
     }
 
