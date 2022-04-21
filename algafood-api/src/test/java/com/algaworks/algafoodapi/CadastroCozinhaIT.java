@@ -48,7 +48,7 @@ public class CadastroCozinhaIT { //testaremos a classe de servico //padraoIT pro
     private Cozinha cozinhaAmericana;
     private int quantidadeCozinhasCadastradas;
     private String jsonCorretoCozinhaChinesa = ResourceUtils.getContentFromResource(
-            "/json/correto/cozinha-chinesa.json");;
+            "/json/correto/cozinha-chinesa.json");
 
 //    @Autowired
 //    private Flyway flyway;

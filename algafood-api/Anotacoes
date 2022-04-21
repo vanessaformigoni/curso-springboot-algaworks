@@ -384,9 +384,14 @@ Log pra logar caso tenha erro -> enableLoggingOfRequestAndResponseIfValidationFa
 Metodos de callback -> um método chamado antes de cada teste. 
 
 A ordem que os testes são executadas é aleatório, e devemos tomar cuidado com isso pois, dependendo, um teste pode interferir no outro, para evitar isso, devemos sempre voltar ao estado inicial do banco de dados na hora de fazer os testes. Uma solução é executar o flyway antes de cada teste (rodar o aftermigrate). flyway.migrate(); 
+O Thiago disse que prefere fazer ps testes de api no banco real pra chegar o mais proximo possivel de prod. Em prod não será um H2 por isso ele não usa. Vamos criar um banco só pra testes. Usando a anotação @TestPropertySource dizemos pro spring subir o application.properties substituindo as informações que tiverem no application-test.properties. 
 
 
 Aonde eu digo no código que a resposta é json ?
+
+O que eu preciso testar ? O que agrega valor, que ajuda a evoluir o seu projeto, garantindo que o que ja foi desenvolvido, não vai quebrar. Pode ser a interface a api (contrato - retorno json, codigo de status, nome da propriedade), o teste deve falhar. Especialmente se o contrato for muito importante. Outro foco é na funcionalidade da api, se o endpoint faz x, então o resultado esperado x deve ser executado. Devemos sempre testar os caminhos infelizes.
+
+Fazer consulta e cadastro de restaurante. 
 
 
 
