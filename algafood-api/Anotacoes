@@ -391,7 +391,45 @@ Aonde eu digo no código que a resposta é json ?
 
 O que eu preciso testar ? O que agrega valor, que ajuda a evoluir o seu projeto, garantindo que o que ja foi desenvolvido, não vai quebrar. Pode ser a interface a api (contrato - retorno json, codigo de status, nome da propriedade), o teste deve falhar. Especialmente se o contrato for muito importante. Outro foco é na funcionalidade da api, se o endpoint faz x, então o resultado esperado x deve ser executado. Devemos sempre testar os caminhos infelizes.
 
-Fazer consulta e cadastro de restaurante. 
+
+----------> Dockerizando a aplicação (24)
+
+Vamos dockerizar a nossa aplicação. Pra colocar em producação em containers docker. O container é um pacote que roda dentro dele todos os softwares, bibliotecas e dependencias necessarias, com portabilidadee de forma repetivel e confiável. Depois que o container tiver pronto, bastar duplicar e usar. O container desacoplando o a aplicação do hardware e SO da máquina. Empacotando todos os artefatos e dependencias dentro de containers incluindo o SO. o Container fica portatil podendo ser rodado em qualquer qualquer máquina, servidor, qualquer infra, até na nuvem. Ambientes isolados, propria rede, processo, mas compartilha o mesmo kernel do S.O. Os containers ficaram acessíveis com o docker. Na distribuição do software, a gente não usa mais o jar da aplicação java pra subir pra produção, a gente disponibilida a imagem do container (unidade de distribuição) - Imagem do container: que nada mais é que um binário, e que tem tudo, so, lib, dependencias e a aplicação. Fica tudo dentro do container isolado de outras aplicações. Se houver outra aplicação, com outras versões em outro container não haverá conflito pois, eles estarão isolados.
+
+O docker é a ferramenta de containers mais popular, que deu acessibilidade aos containers. O docker é uma plataforma pra rodar E construir containers em vários ambientes: dev, hom e prod. Separa a aplicação da infra. Com o docker, cada componente do software roda de forma isolada em um container diferente com suas bibliotecas e dependencias.
+
+Tem que instalar a platafoma do docker. E tem um dashboad pra descktop pra de ajudar com os containers. 
+-$ docker container run nginx (docker trabalharemos com um container, rode uma imagem nginx). Essa imagem existe na nuvem, num repositorio remoto chamado docker hub. O docker vai instanciar um container a partir dessa imagem. Precisamos dizer também qual porta nos queremos usar. Quando queremos acessar da nossa maquina host e queremos acessar um serviço inicializado dentro do container, nos devemos dizer qual porta queremos publicar quando levantamos o container.
+docker container run -p 80:80 nginx ,  -p (publica na ) porta 80 do host: o que ta na porta (80) do container.
+docker help
+docker container help
+docker container run --help
+https://docs.docker.com/engine/reference/commandline/docker/
+
+nginx e wordpress são imagens
+
+docker container ls (lista apenas os containers que estão rodando). 
+
+docker container ls --all (lista todos)
+
+docker container run -p 80:80 -d wordpress (roda em background) e retorna o id do container iniciado.
+
+docker container logs 4e06056907c4 (ver os logs dentro do container)
+
+docker container logs -f 4e06056907c4 (seguir os logs)
+
+docker container start/stop 4e06056907c4 (inicia/para o container dado um id). (o start só sobe, não cria nada).
+
+docker container rm 4e06056907c4 (remove o container que não esta rodando)
+
+docker container rm 4e06056907c4 --force (remove se tiver rodando).
+
+docker container prune (limpa tudo).
+
+vanessapessoal@PPM-VIX-1979 ~ % docker container run -p 80:80 -d --name bloguedavanessa wordpress (nomeando o container)
+
+No terminal, a gente usa o client do docker, o docker xxx é o cliente. O docker host é a máquina, aonde a gente instala o docker e que vai conter os containers. O docker deamon é um software que gerencia tudo dentro do docker.
+O container é uma instancia executavel de uma imagem. E as imagens são templates pra rodar o container. É o dvd (uma unica midia, voce pode replicar, é uma receita). O Docker registry armazena imagens do docker. O dockerhub é um registry padrao.
 
 
 
