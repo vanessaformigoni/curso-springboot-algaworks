@@ -429,7 +429,55 @@ docker container prune (limpa tudo).
 vanessapessoal@PPM-VIX-1979 ~ % docker container run -p 80:80 -d --name bloguedavanessa wordpress (nomeando o container)
 
 No terminal, a gente usa o client do docker, o docker xxx é o cliente. O docker host é a máquina, aonde a gente instala o docker e que vai conter os containers. O docker deamon é um software que gerencia tudo dentro do docker.
-O container é uma instancia executavel de uma imagem. E as imagens são templates pra rodar o container. É o dvd (uma unica midia, voce pode replicar, é uma receita). O Docker registry armazena imagens do docker. O dockerhub é um registry padrao.
+O container é uma instancia executavel de uma imagem. E as imagens são templates pra rodar o container. É o dvd (uma unica midia, voce pode replicar, é uma receita). O Docker registry armazena imagens do docker. O dockerhub é um registry padrao. A amazon tem seu próprio registry.
+
+Gerenciando as imagens:
+Eu posso não ter container rodando, mas tenho imagens salvas na minha maquina. Por isso é bom gerenciar, memoria, uso etc. 
+Baixar imagem sem rodar o container: 
+docker image pull nomedaimagem - Baixa sem iniciar o containeer
+docker container run --rm -it openjdk:8-jre-slim bash (ai roda normnalmente depois)
+docker image rm openjdk:8-jre-slim (remove imagem) 
+sudo docker container run -d -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=yes --name algafood-mysql mysql:8.0
+
+Agora vamos contruir a imagem da nossa aplicação.
+-> se quiser voltar ao mysql server, startar pelo mysql.prefpane.
+Dockerfile = arquivo que tem a receita pra criar a imagem docker.
+
+ja temos o mvn dentro da aplicação, então a gente vai fazer um mvn clean instal pra fazer o empacotamento, gerando o jar, dentro da pasta target. Vamos usar o algafood-api-0.0.1-SNAPSHOT.jar pra contruir a imagem.
+FROM imagem base da qual estamos construindo nossa imagem. Usamos a openjdk pra dizer que ja vai vir com o java instalado. Workdir aonde as instrucoes vao rodar. Se não existir, cria um. A COPY recebe origem e destino, pega o arquivo dessa pasta e copia pra dentro da imagem que estamos construindo. Expose informa qual porta ele vai escutar quando tiver rodando. CMD comando padrao pra quando o container iniciar, o que tem que ser rodado.
+
+dentro da pasta, ai a gente constroi a imagem:
+docker image build -t algafood . (acho que é pq não existe no dockerhub ainda).
+
+Nesse ponto usei outra imagem de java pra contruir a imagem da aplicação. 
+Agora, o endereço do mysql não é mais localhost e sim um outro container. Logo, teremos que conectar dois containers. Pra isso, precisaremos criar uma rede pra conectar esses dois containers pela rede, uma network.
+
+docker network ls (por padrao já existem 3)
+
+1) docker network create --driver bridge nome (bridge é um drive, que é a forma como as redes funcionam, esse é o padrao). O bridge mantem a rede do host isolada. Cria uma rede isolada e permite que os containers conectados a mesma rede desse tipo possam se conectar.
+
+Vamos levantar os containers e vincular mesma rede.
+
+Os volumes são tipo discos, locais aonde pode armazenar dados. Se eu quiser remover o container junto com o volume, preciso dar um
+
+docker container rm algafood-api --force --volumes
+
+docker volumes ls 
+
+2) docker container run -d -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=yes --network algafood-network --name algafood-mysql mysql:8.0 (baixou e inicializou o container e colocou na nossa rede criada)
+
+agora o container ta rodando dentro da rede que a gente criou.  
+Alterar o localhost pra DB_HOST
+Toda vez que alterar algo no código, tem que gerar um novo jar com o ./mvnw package pra gerar um novo jar. E ai agora a gente build a imagem com o novo jar. Agora com o jar, vamos criar a imagem de novo 
+
+sudo docker image build -t algafood-api .
+
+3) E depois levantar um container com essa imagem na nova rede. 
+
+sudo docker container run --rm  -p 8080:8080 -e DB_HOST=algafood-mysql --network algafood-network algafood-api
+
+
+
 
 
 
