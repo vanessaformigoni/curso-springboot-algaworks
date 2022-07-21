@@ -486,6 +486,31 @@ docker image build -t algagfood-api . (constroi a imagem usando o jar gerado).
 Para construir a imagem pelo maven, vamos usar um plugin. Dockerfile maven plugin
  ./mvnw package -Pdocker (onde docker o nome do id dado no profile)
 
+Na seção 24.12 ensina a subir a imagem pro dockerhub.
+
+24.13 Docker Compose:
+
+O docker compose é uma ferramenta pra definir e rodar vários containers de uma aplicação completa. Ex. o algafood é a aplicação e dentro tem os projetos,api, mysql, redis, etc. A aplicação tem vários serviços que dependem um do outro e o docker compose é ferramenta que diz como será executado cada um desses serviços. Precisamos do docker-compose.yml (até o momento, estavamos criando tudo por linha de comando, o docker-compose.yml irá documentar isso). 
+
+Tem que instalar o docker-compose (já tem no docker descktop pra mac e windows).
+O Docker compose tem as versões. Atualmente ta na 3.0. e tem a documentação dele.
+
+services: (containers)
+  algafood-mysql: (nome do container)
+    image: mysql:8.0 (imagem)
+
+
+algafood-api:
+    build: . (faz o build do arquivo Dockerfile na pasta raiz)
+
+
+docker compose : serve pra compor a aplicação e gerenciar multiplos serviços ao mesmo tempo.
+
+docker-compose up (inicializa o container)
+docker-compose up -d (inicializa em background)
+docker-compose logs -f (pra ver os logs)
+docker-compose down (para e remove os containers) --volumes (remove os volumes tbm)
+
 
 
 
