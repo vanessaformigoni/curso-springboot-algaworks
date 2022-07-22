@@ -441,7 +441,7 @@ sudo docker container run -d -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=yes --na
 
 Agora vamos contruir a imagem da nossa aplicação.
 -> se quiser voltar ao mysql server, startar pelo mysql.prefpane.
-Dockerfile = arquivo que tem a receita pra criar a imagem docker. 24.9
+Dockerfile = arquivo que tem a receita pra criar a imagem docker da aplicacao. 24.9
 
 ja temos o mvn dentro da aplicação, então a gente vai fazer um mvn clean instal pra fazer o empacotamento, gerando o jar, dentro da pasta target. Vamos usar o algafood-api-0.0.1-SNAPSHOT.jar pra contruir a imagem.
 FROM imagem base da qual estamos construindo nossa imagem. Usamos a openjdk pra dizer que ja vai vir com o java instalado. Workdir aonde as instrucoes vao rodar. Se não existir, cria um. A COPY recebe origem e destino, pega o arquivo dessa pasta e copia pra dentro da imagem que estamos construindo. Expose informa qual porta ele vai escutar quando tiver rodando. CMD comando padrao pra quando o container iniciar, o que tem que ser rodado.
@@ -511,6 +511,8 @@ docker-compose up -d (inicializa em background)
 docker-compose logs -f (pra ver os logs)
 docker-compose down (para e remove os containers) --volumes (remove os volumes tbm)
 
+
+Controlando a ordem de inicialização com wait-for-it.sh: Pra evitar que um container suba antes do outro e atrapalhe a ordem das dependencias, usaremos a ferramente wait-for-it
 
 
 
