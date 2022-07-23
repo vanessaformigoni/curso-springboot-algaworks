@@ -514,6 +514,20 @@ docker-compose down (para e remove os containers) --volumes (remove os volumes t
 
 Controlando a ordem de inicialização com wait-for-it.sh: Pra evitar que um container suba antes do outro e atrapalhe a ordem das dependencias, usaremos a ferramente wait-for-it
 
+Em produção, é uma boa prática que tenhamos pelo menos dois containers da nossa aplicação. E vamos ter também um balanceador de cargas (software/componente). O balanceador de carga que vai dizer pra qual container vai a requisição. 
+
+DEVERIA SER ASSIM, MAS COMO EU NÃO TENHO TODAS AS TABELAS, VOU TIRAR POR ENQUANTO
+
+lock table cidade write, cozinha write, estado write, forma_pagamento write,
+                    grupo write, grupo_permissao write, permissao write,
+                    produto write, restaurante write, restaurante_forma_pagamento write,
+                    restaurante_usuario_responsavel write, usuario write, usuario_grupo write,
+                    pedido write, item_pedido write, foto_produto write, oauth_client_details write;
+
+para fazer a replica podemos fazer por linha de comando:
+docker-compose up --scale nomedoservico=ndeinstancias.
+
+TODA VEZ QUE EU FIZER ALTERAÇÃO NO CÓDIGO, TEM QUE EMPACOTAR PRA GERAR A NOVA IMAGEM.
 
 
 
