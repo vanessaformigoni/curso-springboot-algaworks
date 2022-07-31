@@ -529,6 +529,8 @@ docker-compose up --scale nomedoservico=ndeinstancias.
 
 TODA VEZ QUE EU FIZER ALTERAÇÃO NO CÓDIGO, TEM QUE EMPACOTAR PRA GERAR A NOVA IMAGEM.
 
+24.18 -> VOLTAR APOS ESTUDAR O AUTH2
+
 
 
 
