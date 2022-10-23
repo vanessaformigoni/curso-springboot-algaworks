@@ -392,6 +392,19 @@ Aonde eu digo no código que a resposta é json ?
 O que eu preciso testar ? O que agrega valor, que ajuda a evoluir o seu projeto, garantindo que o que ja foi desenvolvido, não vai quebrar. Pode ser a interface a api (contrato - retorno json, codigo de status, nome da propriedade), o teste deve falhar. Especialmente se o contrato for muito importante. Outro foco é na funcionalidade da api, se o endpoint faz x, então o resultado esperado x deve ser executado. Devemos sempre testar os caminhos infelizes.
 
 
+----------> Boas Praticas e técnicas para APIS
+
+É uma boa prática, anotar nós métodos publicos das classes de servico com @Transactionl pois, caso tenha um método de delete, e outro de save, e dê algum problema de transação após o delete, e o save não puder ser feito, o banco não irá ficar inconsistente, pois o rollback será feito. 
+
+o @JsonIgnore ignora a exibição do campo json. Você não pode nem alterar e nem ver a variável no objeto inteiro. A prioriedade passa a não existir pro json. Ignora 100%. A variável só fica servindo pra armazenar a informação do dado (BD). Usando o @JsonIgnoreProperties (variavel) eu digo por exemplo: ignorar a variável NOME de Cozinha. O Problema do @JsonIgnoreProperties é que ele ignora tanto na serialização, quanto na deserialização. Ignora somente a propriedade de cozinha quando a serialização vier de origem restaurande. (Ex quando a gente faz a busca de um restaurante, ele mandou ignorar no nome na atualização e consequentemente ignorou na represantação da busca.). Tem como ignorar apenas apenas na deserialização: de  json p/ objeto restaurante ? @JsonIgnoreProperties(value = "nome", allowGetters = true) - Permita métodos getters. Ex getNome. 
+
+Desserialização (json pra objeto).
+Serialização (Objeto pra json).
+
+As anotações como jsonIgnore jsonIgnoreProperpies são anotações do jackson servem pra customizar a represenção de recursos. Com muitas anotações começa a ficar muito cheio isso. Classes mixin são classes que possuem membros de uma classe original, que tem as propriedades da classe original com as devidas anotações. No mixin só terá as anotações do jackson. Pra despoluir. Assim a classe de dominio não tem nada customizando a representação de recursos. Nada relacionado a api. Na classe JacksonMixinModule iremos fazer a licação entre a classe Restaurante e RestauranteMixin. O pacote core é aonde ficam as classes de configuração que nào tem muita relação direta com os outros pacotes (api, domain) ou algo compartilhado entre várias camadas. Isso tudo fica no paxote core. Nesse classe JacksonMixinModule iremos registrar nossos mixins.
+  
+
+
 ----------> Dockerizando a aplicação (24)
 
 Vamos dockerizar a nossa aplicação. Pra colocar em producação em containers docker. O container é um pacote que roda dentro dele todos os softwares, bibliotecas e dependencias necessarias, com portabilidadee de forma repetivel e confiável. Depois que o container tiver pronto, bastar duplicar e usar. O container desacoplando o a aplicação do hardware e SO da máquina. Empacotando todos os artefatos e dependencias dentro de containers incluindo o SO. o Container fica portatil podendo ser rodado em qualquer qualquer máquina, servidor, qualquer infra, até na nuvem. Ambientes isolados, propria rede, processo, mas compartilha o mesmo kernel do S.O. Os containers ficaram acessíveis com o docker. Na distribuição do software, a gente não usa mais o jar da aplicação java pra subir pra produção, a gente disponibilida a imagem do container (unidade de distribuição) - Imagem do container: que nada mais é que um binário, e que tem tudo, so, lib, dependencias e a aplicação. Fica tudo dentro do container isolado de outras aplicações. Se houver outra aplicação, com outras versões em outro container não haverá conflito pois, eles estarão isolados.

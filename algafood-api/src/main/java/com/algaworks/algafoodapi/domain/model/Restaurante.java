@@ -1,10 +1,7 @@
 package com.algaworks.algafoodapi.domain.model;
 
 import com.algaworks.algafoodapi.core.validation.Groups;
-import com.algaworks.algafoodapi.core.validation.TaxaFrete;
 import com.algaworks.algafoodapi.core.validation.ValorZeroIncluiDescricao;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -43,9 +40,7 @@ public class Restaurante  {
     //@TaxaFrete
     private BigDecimal taxaFrete;
 
-    //@JsonIgnore
-   // @JsonIgnoreProperties("hibernateLazyInitializer")x
-    @JsonIgnoreProperties(value = "nome", allowGetters = true)
+
     @Valid
     @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @NotNull
@@ -53,28 +48,23 @@ public class Restaurante  {
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
-    @JsonIgnore
     @Embedded
     private Endereco endereco;
 
-    @JsonIgnore
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataCadastro;
 
-    @JsonIgnore
     @UpdateTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataAtualizacao;
 
-    @JsonIgnore
     @ManyToMany //(fetch = FetchType.EAGER) //Exemplo de como alterar pra Eager Loading - Ja que o padrão ToMany é Lazy -
     @JoinTable(name = "restaurante_forma_pagamento", //para customizar o nome da tabela intermediaria
             joinColumns = @JoinColumn (name = "restaurante_id"), //(Ja que estamos mapeando restaurante) Define o nome da coluna na tabela intermediaria que associa em restaurante
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
 }
