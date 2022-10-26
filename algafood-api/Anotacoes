@@ -402,6 +402,10 @@ Desserialização (json pra objeto).
 Serialização (Objeto pra json).
 
 As anotações como jsonIgnore jsonIgnoreProperpies são anotações do jackson servem pra customizar a represenção de recursos. Com muitas anotações começa a ficar muito cheio isso. Classes mixin são classes que possuem membros de uma classe original, que tem as propriedades da classe original com as devidas anotações. No mixin só terá as anotações do jackson. Pra despoluir. Assim a classe de dominio não tem nada customizando a representação de recursos. Nada relacionado a api. Na classe JacksonMixinModule iremos fazer a licação entre a classe Restaurante e RestauranteMixin. O pacote core é aonde ficam as classes de configuração que nào tem muita relação direta com os outros pacotes (api, domain) ou algo compartilhado entre várias camadas. Isso tudo fica no paxote core. Nesse classe JacksonMixinModule iremos registrar nossos mixins.
+
+GMT é o fuso horário, UTC é o padrão.
+
+5 leis pra trabalhar com data e hora em rest-api: 1 - Use iso8601 pra formatar data/hora. 2019-10-12T14:15:38-03:00 (usar sempre padrao utc 2019-10-12T14:15:38Z). 2- aceite qualquer fuso horario. 3 - armazene em utc. 4- Retorne em utc (o front end que converta). 5- Não inclua o horario se não for necessário (use somente a data).
   
 
 
