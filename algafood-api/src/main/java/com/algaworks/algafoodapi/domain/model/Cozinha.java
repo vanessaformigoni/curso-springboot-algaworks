@@ -17,7 +17,7 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Cozinha {
 
-    @NotNull(groups = Groups.CozinhaId.class)
+//    @NotNull(groups = Groups.CozinhaId.class) // ta na classe de imput
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY) //Quem gera a chave é o provedor

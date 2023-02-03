@@ -31,20 +31,20 @@ public class Restaurante  {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @NotBlank//groups = Groups.CadastroRestaurante.class) //Usando grupos pra fazer a validacao
+//    @NotBlank//groups = Groups.CadastroRestaurante.class) //Usando grupos pra fazer a validacao
     @Column(nullable = false)
     private String nome;
 
-    @NotNull
+//    @NotNull //ja estao agora nas classes de entrada. Input
     //@DecimalMin("0")
-    @PositiveOrZero
+//    @PositiveOrZero
     //@TaxaFrete
     private BigDecimal taxaFrete;
 
 
-    @Valid
-    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
-    @NotNull
+//    @Valid
+//    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+//    @NotNull
     @ManyToOne//(fetch = FetchType.LAZY) //Só carrega essa associacao caso precise.
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;

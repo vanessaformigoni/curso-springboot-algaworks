@@ -407,7 +407,8 @@ GMT é o fuso horário, UTC é o padrão.
 
 5 leis pra trabalhar com data e hora em rest-api: 1 - Use iso8601 pra formatar data/hora. 2019-10-12T14:15:38-03:00 (usar sempre padrao utc 2019-10-12T14:15:38Z). 2- aceite qualquer fuso horario. 3 - armazene em utc. 4- Retorne em utc (o front end que converta). 5- Não inclua o horario se não for necessário (use somente a data).
   
-Estamos usando as entidades do domail model (bd) como representation model da api. Isso é ruim. Vamos isolar isso com o padrão DTO. 11.10
+Estamos usando as entidades do domail model (bd) como representation model da api. Isso é ruim. Vamos isolar isso com o padrão DTO. 
+Fizemos como saida o RestaurantModel (mas não vamos usar ele mais). Podemos ter mais de um DTO de saida/entrada. Entrada ele chamou de input.
 
 ----------> Dockerizando a aplicação (24)
 
