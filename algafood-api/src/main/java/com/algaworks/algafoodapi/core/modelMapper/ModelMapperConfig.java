@@ -14,8 +14,8 @@ public class ModelMapperConfig {
        // return new ModelMapper();
         var modelMapper =  new ModelMapper();
 
-        modelMapper.createTypeMap(Restaurante.class, RestauranteModel.class)
-                .addMapping(Restaurante::getTaxaFrete, RestauranteModel::setPrecoFrete); //primeiro o get depois o set
+//        modelMapper.createTypeMap(Restaurante.class, RestauranteModel.class) //caso eu queira alterar o nome da variavel a ser exibida na saida
+//                .addMapping(Restaurante::getTaxaFrete, RestauranteModel::setPrecoFrete); //primeiro o get depois o set
         return modelMapper;
     }
 }
