@@ -18,8 +18,8 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@ValorZeroIncluiDescricao(valorField = "taxaFrete",
-        descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
+//@ValorZeroIncluiDescricao(valorField = "taxaFrete",
+//        descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -39,6 +39,7 @@ public class Restaurante  {
     //@DecimalMin("0")
 //    @PositiveOrZero
     //@TaxaFrete
+    @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
 

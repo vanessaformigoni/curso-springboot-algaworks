@@ -12,8 +12,9 @@ public class RestauranteModel {
 
     private Long id;
     private String nome;
-    @NotNull
-    private BigDecimal taxaFrete;
+    private BigDecimal precoFrete;
     private CozinhaModel cozinha;
+//    private String nomeCozinha; //também poderia ser assim que o ModelMapper entenderia
+//    private Long idCozinha;
 
 }

@@ -408,7 +408,21 @@ GMT é o fuso horário, UTC é o padrão.
 5 leis pra trabalhar com data e hora em rest-api: 1 - Use iso8601 pra formatar data/hora. 2019-10-12T14:15:38-03:00 (usar sempre padrao utc 2019-10-12T14:15:38Z). 2- aceite qualquer fuso horario. 3 - armazene em utc. 4- Retorne em utc (o front end que converta). 5- Não inclua o horario se não for necessário (use somente a data).
   
 Estamos usando as entidades do domail model (bd) como representation model da api. Isso é ruim. Vamos isolar isso com o padrão DTO. 
-Fizemos como saida o RestaurantModel (mas não vamos usar ele mais). Podemos ter mais de um DTO de saida/entrada. Entrada ele chamou de input.
+Fizemos como saida o RestaurantModel (mas não vamos usar ele mais). Podemos ter mais de um DTO de saida/entrada. Entrada ele chamou de input. Não é necessário que todos os controladores.
+Criamos o pacote assembler para colocar todas as classes de conversao entidade/modelo. Na classe RestauranteAssemblerModel , precisamos anotar como @Componente para o spring saber, na hora da inicialização, que deve inicializar essa classe logo no começo. E injetamos ela na classe RestauranteController com o @Autowired.
+Para esses inumeros set, get do restaure, usaremos o modelMapper que é uma biblioteca tem o objetivo de fazer o mapeamento de um objeto pra outro e transformar de um modelo pra outro.
+Depois que a gente adicionou a lib do modelMapper, a gente precisa injetar essa instancia, @Autowired, porém o Modelmapper não é uma biblioteca nativa do spring, não é um componente spring, logo, a gente precisa, a gente não tem acesso a classe pra anota-la com o @component, então precisamos criar uma classe de configuração, anota-la com o @configuration, e anotar a classe que retorna no ModelMapper com @bean.
+
+Em Spring Boot, um bean é uma classe gerenciada pelo framework Spring que representa uma entidade ou componente da aplicação. Essas classes são gerenciadas pelo contexto do Spring e estão disponíveis para serem injetadas em outras partes da aplicação através do mecanismo de injeção de dependência do Spring. Um bean pode ser qualquer coisa, desde um serviço ou componente de negócios até um repositório de dados ou objeto de configuração. A criação e gerenciamento de beans é feito automaticamente pelo Spring, tornando o processo de desenvolvimento mais simples e eficiente.
+
+
+
+
+
+
+
+
+
 
 ----------> Dockerizando a aplicação (24)
 
