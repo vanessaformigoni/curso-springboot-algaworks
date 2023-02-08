@@ -5,9 +5,9 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter
 @Setter
-public class CozinhaInput {
+@Getter
+public class EstadoInput {
     @NotBlank
     private String nome;
 }
