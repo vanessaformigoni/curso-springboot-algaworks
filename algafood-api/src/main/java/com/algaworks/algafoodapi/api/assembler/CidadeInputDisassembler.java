@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class CidadeInputDisassembler {
 
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     public Cidade toDomainObject(CidadeInput cidadeInput) {
         return modelMapper.map(cidadeInput, Cidade.class);

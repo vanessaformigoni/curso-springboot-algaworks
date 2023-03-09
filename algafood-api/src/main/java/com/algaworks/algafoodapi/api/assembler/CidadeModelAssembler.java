@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class CidadeModelAssembler {
 
     @Autowired
-    public ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     public CidadeModel toModel(Cidade cidade) {
         return modelMapper.map(cidade, CidadeModel.class);

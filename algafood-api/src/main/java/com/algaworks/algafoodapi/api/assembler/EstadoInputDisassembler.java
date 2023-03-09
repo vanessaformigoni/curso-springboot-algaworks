@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EstadoInputDisassembler {
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     public Estado toDomainObject(EstadoInput estadoInput) {
         return modelMapper.map(estadoInput, Estado.class);

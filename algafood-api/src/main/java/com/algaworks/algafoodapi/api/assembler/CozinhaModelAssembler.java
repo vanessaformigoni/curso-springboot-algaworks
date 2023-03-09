@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class CozinhaModelAssembler {
 
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     public CozinhaModel toModel(Cozinha cozinha) {
         return modelMapper.map(cozinha, CozinhaModel.class);

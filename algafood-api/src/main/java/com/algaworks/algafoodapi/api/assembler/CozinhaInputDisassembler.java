@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class CozinhaInputDisassembler {
 
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     public Cozinha toDomainObject(CozinhaInput cozinhaInput) {
         return modelMapper.map(cozinhaInput, Cozinha.class);

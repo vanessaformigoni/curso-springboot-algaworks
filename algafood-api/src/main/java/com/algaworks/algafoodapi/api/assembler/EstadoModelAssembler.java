@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Component
 public class EstadoModelAssembler {
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     public EstadoModel toModel(Estado estado) {
         return modelMapper.map(estado, EstadoModel.class);
