@@ -416,7 +416,9 @@ Depois que a gente adicionou a lib do modelMapper, a gente precisa injetar essa 
 Em Spring Boot, um bean é uma classe gerenciada pelo framework Spring que representa uma entidade ou componente da aplicação. Essas classes são gerenciadas pelo contexto do Spring e estão disponíveis para serem injetadas em outras partes da aplicação através do mecanismo de injeção de dependência do Spring. Um bean pode ser qualquer coisa, desde um serviço ou componente de negócios até um repositório de dados ou objeto de configuração. A criação e gerenciamento de beans é feito automaticamente pelo Spring, tornando o processo de desenvolvimento mais simples e eficiente.
 
 
+----------> Modelagem avançada e implementação da API
 
+Em rest, qualquer informaçao que pode ser identificada por um nome, é um recurso. /restaurantes (coleção de recursos) /restaurantes/1 (único recurso). Agora vamos modelar sub-recursos. /restaura/1/endereco , assim, /enderece é um subrecurso. Temos no primeiro caso (qunando o endereco faz parte do recurso) um recurso de granularidade grossa. O segundo é um recurso de granularidade fina. E tem agora o sub-recurso de coleções. /restaurantes/1/produtos (os produtos só podem existir se o restaurante existir). Produtos é um subrecurso do recurso restaurate. Também podemos ter o recurso único do produto dentro do subrecurso de coleção de produtos /restaurante/1/produtos/100.
 
 
 
