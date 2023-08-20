@@ -14,7 +14,6 @@ public class RestauranteModel {
     private String nome;
     private BigDecimal precoFrete;
     private CozinhaModel cozinha;
-//    private String nomeCozinha; //também poderia ser assim que o ModelMapper entenderia
-//    private Long idCozinha;
+    private Boolean ativo;
 
 }

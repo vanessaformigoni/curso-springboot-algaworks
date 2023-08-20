@@ -418,11 +418,19 @@ Em Spring Boot, um bean é uma classe gerenciada pelo framework Spring que repre
 
 ----------> Modelagem avançada e implementação da API
 
-Em rest, qualquer informaçao que pode ser identificada por um nome, é um recurso. /restaurantes (coleção de recursos) /restaurantes/1 (único recurso). Agora vamos modelar sub-recursos. /restaura/1/endereco , assim, /endereco é um subrecurso. Temos no primeiro caso (qunando o endereco faz parte do recurso) um recurso de granularidade grossa. O segundo é um recurso de granularidade fina. E tem agora o sub-recurso de coleções. /restaurantes/1/produtos (os produtos só podem existir se o restaurante existir). Produtos é um subrecurso do recurso restaurate. Também podemos ter o recurso único do produto dentro do subrecurso de coleção de produtos /restaurante/1/produtos/100. Restaurante é o recurso e dentro dele podem ter varias entidades (cozinha, endereço).
-Parametro de url: GET/produtos?restaurante=1 (filtro). Se a relação for muito forte, se os produtos só podem existir se o restaurante existir, então podemos modelar um sub-recurso de coleção de produtos dentro do recurso restaurante. Também podemos ter o recurso único de pruduto, dentro do sub-recurso de coleção de produtros dentro do recurso restaurate (GET /restaurante/1/produtos/100). Para adicionar um novo produto : POST restaurante/1/produtos {body ...}
+Em rest, qualquer informaçao que pode ser identificada por um nome, é um recurso. /restaurantes (coleção de recursos) /restaurantes/1 (único recurso). Agora vamos modelar sub-recursos. /restaura/1/endereco , assim, /endereco é um subrecurso. Temos no primeiro caso (qunando o endereco faz parte do recurso) um recurso de granularidade grossa. O segundo é um recurso de granularidade fina. E tem agora o sub-recurso de coleções. /restaurantes/1/produtos (os produtos só podem existir se o restaurante existir). Produtos é um subrecurso do recurso restaurate. Também podemos ter o recurso único do produto dentro do subrecurso de coleção de produtos /restaurante/1/produtos/100.
 
-Chartty api (tagarela)-> granularidade fina (muitas requisições pra finalizar ma opereção) - Para cadastrar um restaurante por completo, faz várias chamadas diferentes.
-Chunck api (pedaço grosso) -> Uma única requisição pra fazer uma operação - Para cadastrar um restaurante, faz só uma chamada (Passa os dados do restaurante, a taxa frete, endereço - tudo de uma só vez). Precisamos pensar nos consumidores na hora de modelar um recurso. Se optarmos pela granularidade fina, precisamos se atentar a consistencia dos dados (ex se endereço for obrigatorio mas for uma outra chamada a outro recurso). Tem que ter cuidado com a granularidade fina e o estado do recurso inconsistente.
+- Objeto transiente: é aquele objeto criado na memória e que o nosso contexto de persistência (EntityManager) não tem conhecimento, pois o mesmo ainda não existe na base de dados.
+
+- Objeto Persistente: ao contrário do objeto transiente trata-se daquele objeto o qual o contexto de persistência tem conhecimento, ou seja, já existe um registro no banco de dados para o mesmo e o EntityManager já está com o mesmo sob o seu controle (pois buscamos o mesmo no banco, por exemplo).
+
+- Objeto destacado: trata-se de um objeto que estava sendo gerenciado pelo contexto de persistência e que foi desatachado deste contexto quando a session finalizou.
+
+Entendido este ponto, podemos então pensar que sempre que vamos atualizar um objeto no banco, precisamos ter um objeto persistente. E claro, se já temos o mesmo sendo gerenciado pelo EntityManager, ao alterarmos os atributos do mesmo, de fato não há a necessidade de invocar o método save na sequência, pois o hibernate já entende que este objeto sofreu alteração e que portanto precisa ser persistido no banco de dados após estas mudanças.
+
+No caso de um novo registro, o nosso objeto ainda não está sendo gerenciado pelo contexto e portanto trata-se de um objeto transiente. Neste caso, então, temos que sim invocar o método save de forma explicita. Após o hibernate salvá-lo na base, o mesmo passa para o estado persistente. Logo, se após persistir o mesmo, desejasse prover alguma modificação, estando na mesma session, não precisaria buscar o mesmo na base, pois ele já estaria no contexto de persistência.
+
+Espero ter ajudado. Nos deixe saber se restou mais algum ponto em que possamos ajudá-lo no esclarecimento. Um grande abraço e excelentes estudos.
 
 
 

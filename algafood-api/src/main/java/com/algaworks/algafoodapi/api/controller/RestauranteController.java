@@ -58,7 +58,7 @@ public class RestauranteController {
 
     @GetMapping("/{restauranteId}")
     public RestauranteModel buscar(@PathVariable Long restauranteId) {
-       Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
+        Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 
         return restauranteModelAssembler.toModel(restaurante);
     }
@@ -77,9 +77,9 @@ public class RestauranteController {
 
     @PutMapping("/{restauranteId}")
     public RestauranteModel atualizar(@PathVariable Long restauranteId,
-                                 @RequestBody @Valid RestauranteInput restauranteInput) {
+                                      @RequestBody @Valid RestauranteInput restauranteInput) {
         try {
-           // Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput); //agora vamos usar o mapper
+            // Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput); //agora vamos usar o mapper
             Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 
             restauranteInputDisassembler.copyToDomainObject(restauranteInput,restauranteAtual);
@@ -94,17 +94,17 @@ public class RestauranteController {
 
     }
 
-//    @PatchMapping("/{restauranteId}") //Ele vai ensinar futuramente a fazer de forma mais elegante.
-//    public Restaurante atualizarParcial(@PathVariable Long restauranteId,
-//                                        @RequestBody Map<String, Object> campos , HttpServletRequest request) {
-//
-//        Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
-//
-//        merge(campos, restauranteAtual , request); //funcao: mesclar os dados do campos para o restaurante atual
-//        validate(restauranteAtual, "restaurante");
-//
-//        return atualizar(restauranteId, restauranteAtual); //muito bom isso
-//    }
+    @PutMapping("/{restauranteId}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativar(@PathVariable Long restauranteId) {
+        cadastroRestauranteService.ativar(restauranteId);
+    }
+
+    @DeleteMapping("/{restauranteId}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativar(@PathVariable Long restauranteId) {
+        cadastroRestauranteService.inativar(restauranteId);
+    }
 
     private void validate(Restaurante restaurante, String objectName) {
         BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
@@ -140,25 +140,5 @@ public class RestauranteController {
             throw new HttpMessageNotReadableException(e.getMessage(),rootCause, servletServerHttpRequest);
         }
     }
-
-    /*  @GetMapping //Metodo para entender o Lazy Loading
-    public List<Restaurante> listar() {
-        List<Restaurante> restaurantes = restauranteRepository.findAll();
-
-        System.out.println(restaurantes.get(0).getNome());
-        restaurantes.get(0).getFormasPagamento().forEach(System.out::println);
-
-        return restaurantes;
-    }*/
-
-   /* @GetMapping //Metodo para entender o Lazy Loading
-    public List<Restaurante> listar() {
-        List<Restaurante> restaurantes = restauranteRepository.findAll();
-
-        System.out.println("O nome da cozinha é: ");
-        System.out.println(restaurantes.get(0).getCozinha().getNome());
-
-        return restaurantes;
-    }*/
 
 }

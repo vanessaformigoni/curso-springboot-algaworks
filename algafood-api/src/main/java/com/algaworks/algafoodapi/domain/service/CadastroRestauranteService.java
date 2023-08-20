@@ -23,10 +23,6 @@ public class CadastroRestauranteService {
 
         Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(cozinhaId);
 
-//        Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
-//                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-//                        String.format("Não existe cadastro de cozinha com código %d",cozinhaId)));
-
         restaurante.setCozinha(cozinha);
         return restauranteRepository.save(restaurante);
     }
@@ -34,6 +30,20 @@ public class CadastroRestauranteService {
     public Restaurante buscarOuFalhar (Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
+    }
+
+    @Transactional
+    public void ativar(Long id) {
+        Restaurante restaurante = buscarOuFalhar(id);
+
+        restaurante.ativar();
+    }
+
+    @Transactional
+    public void inativar(Long id) {
+        Restaurante restaurante = buscarOuFalhar(id);
+
+        restaurante.inativar();
     }
 
 }
