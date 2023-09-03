@@ -1,6 +1,6 @@
 package com.algaworks.algafoodapi.api.assembler;
 
-import com.algaworks.algafoodapi.api.input.CidadeInput;
+import com.algaworks.algafoodapi.api.model.input.CidadeInput;
 import com.algaworks.algafoodapi.domain.model.Cidade;
 import com.algaworks.algafoodapi.domain.model.Estado;
 import org.modelmapper.ModelMapper;

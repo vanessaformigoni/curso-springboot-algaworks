@@ -1,6 +1,6 @@
 package com.algaworks.algafoodapi.api.assembler;
 
-import com.algaworks.algafoodapi.api.input.EstadoInput;
+import com.algaworks.algafoodapi.api.model.input.EstadoInput;
 import com.algaworks.algafoodapi.domain.model.Estado;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

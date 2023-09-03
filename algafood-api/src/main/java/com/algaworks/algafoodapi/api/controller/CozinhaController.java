@@ -2,12 +2,11 @@ package com.algaworks.algafoodapi.api.controller;
 
 import com.algaworks.algafoodapi.api.assembler.CozinhaInputDisassembler;
 import com.algaworks.algafoodapi.api.assembler.CozinhaModelAssembler;
-import com.algaworks.algafoodapi.api.input.CozinhaInput;
+import com.algaworks.algafoodapi.api.model.input.CozinhaInput;
 import com.algaworks.algafoodapi.api.model.CozinhaModel;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.service.CadastroCozinhaService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

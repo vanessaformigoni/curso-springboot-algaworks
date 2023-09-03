@@ -1,4 +1,4 @@
-package com.algaworks.algafoodapi.api.input;
+package com.algaworks.algafoodapi.api.model.input;
 
 import lombok.Getter;
 import lombok.Setter;

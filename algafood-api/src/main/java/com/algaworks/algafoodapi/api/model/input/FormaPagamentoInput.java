@@ -1,4 +1,4 @@
-package com.algaworks.algafoodapi.api.input;
+package com.algaworks.algafoodapi.api.model.input;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Setter
 @Getter
-public class EstadoInput {
+public class FormaPagamentoInput {
     @NotBlank
-    private String nome;
+    private String descricao;
 }
