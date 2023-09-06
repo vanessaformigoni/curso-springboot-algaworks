@@ -4,6 +4,7 @@ import com.algaworks.algafoodapi.api.assembler.RestauranteInputDisassembler;
 import com.algaworks.algafoodapi.api.assembler.RestauranteModelAssembler;
 import com.algaworks.algafoodapi.api.model.RestauranteModel;
 import com.algaworks.algafoodapi.api.model.input.RestauranteInput;
+import com.algaworks.algafoodapi.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
 import com.algaworks.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafoodapi.domain.exception.NegocioException;
@@ -69,7 +70,7 @@ public class RestauranteController {
             Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
             return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restaurante));
-        } catch (CozinhaNaoEncontradaException e) {
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
     }
@@ -87,7 +88,7 @@ public class RestauranteController {
 //                "id", "formasPagamento", "endereco","dataCadastro", "produtos"); //agora vamos usar o mapper
 
             return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restauranteAtual));
-        } catch (CozinhaNaoEncontradaException e) {
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
 
