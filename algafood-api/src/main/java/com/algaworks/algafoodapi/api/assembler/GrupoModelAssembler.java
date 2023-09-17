@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class GrupoModelAssembler {
 
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     public GrupoModel toModel(Grupo grupo) {
         return modelMapper.map(grupo, GrupoModel.class);
