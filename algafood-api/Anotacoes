@@ -432,6 +432,15 @@ No caso de um novo registro, o nosso objeto ainda não está sendo gerenciado pe
 
 Espero ter ajudado. Nos deixe saber se restou mais algum ponto em que possamos ajudá-lo no esclarecimento. Um grande abraço e excelentes estudos.
 
+O PUT é idempotende, posso fazer varias vezes que não vai ser repetir. O POST não é idempotente.
+
+O objeto buscado no banco de dados ele fica no contexto de persistencia do JPA, na "area de memoria", e o JPA vai gerenciando lá, e qualquer alteração feita no objeto, é sincronizado com o banco de dados. O @Transacional ainda é necessárip pois é com ele que vai ter a sincronização com o banco, se tirar não vai salvar no banco. Só de ser assim, já salvaria no banco:
+
+@Transactional
+public void salvar() {}
+
+Se lançar uma exceção em salvar(), veremos que não vai sincronizar com o banco. O rollback é feito. Na inclusão, aquele metodo lá em cima não funcionaria, porque a gente não faz um buscar ou falhar antes. A gente já vai salvando direto. A instancia não esta no contexto do JPA. Vai ter que ter o usuarioRepository.save(usuário).
+Para evitar o sincronismo no contexto de persistencia, usamos o detach do proprio entity manager. Classe CadastroUsuarioService metodo salvar.
 
 
 
@@ -576,7 +585,7 @@ docker-compose up --scale nomedoservico=ndeinstancias.
 TODA VEZ QUE EU FIZER ALTERAÇÃO NO CÓDIGO, TEM QUE EMPACOTAR PRA GERAR A NOVA IMAGEM.
 
 24.18 -> VOLTAR APOS ESTUDAR O AUTH2
-
+--> corrigir os acentos dos erros
 
 
 
