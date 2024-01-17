@@ -19,7 +19,7 @@ public class ItemPedido {
     private Integer quantidade;
     private BigDecimal precoUnitario;
     private BigDecimal precoTotal;
-    private String observao;
+    private String observacao;
 
     @ManyToOne
     @JoinColumn(nullable = false)
